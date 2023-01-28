@@ -38,6 +38,7 @@ public class ArmSubsystem extends SubsystemBase {
   private RelativeEncoder leftArmEncoder;
   // private DigitalInput flapSensor;
   private DigitalInput armLimitSwitch;
+  private DigitalInput flipSensor;
 
   private double setpoint;
   //Cone/cube mode == incorporate LED's. Purple = cube, yellow = cone
@@ -46,7 +47,7 @@ public class ArmSubsystem extends SubsystemBase {
   //Maybe get rid of
   // private boolean softStopHit = false;
   //Debugging: shows what position arm is supposed to be in
-  public String[] armStates = {"Floor", "Shelf", "Conveyor", "Low", "Medium", "High"};
+  public String[] armStates = {"Floor", "Shelf", "Drive", "Low", "Medium", "High", "Joystick"};
   //Shelf, Drive, Low, Medium, High, Floor
   //Current state
   private String armState;
@@ -61,6 +62,7 @@ public class ArmSubsystem extends SubsystemBase {
   final GenericEntry shuffleboardSetpoint;
   final GenericEntry shuffleboardGrabberState;
   final GenericEntry shuffleboardGrabberFlip;
+  final GenericEntry shuffleboardFlipSensor;
   final GenericEntry shuffleboardCubeMode;
   final GenericEntry shuffleboardArmHardStop;
   final GenericEntry shuffleboardArmSoftStop;
@@ -86,6 +88,7 @@ public class ArmSubsystem extends SubsystemBase {
     // sensors
     // flapSensor = new DigitalInput(Constants.DIO.FLAP_SENSOR);
     armLimitSwitch = new DigitalInput(Constants.DIO.LIMIT_SWITCH);
+    flipSensor = new DigitalInput(Constants.DIO.FLIP_SENSOR);
 
     // arm position presets
     //
@@ -153,6 +156,10 @@ public class ArmSubsystem extends SubsystemBase {
         .withPosition(0, 0)
         .withSize(1, 1)
         .getEntry();
+    shuffleboardFlipSensor = armTab.add("Holding:", false)
+        .withPosition(0, 0)
+        .withSize(1, 1)
+        .getEntry();
     shuffleboardCubeMode = armTab.add("Node Switch:", false)
         .withPosition(0, 0)
         .withSize(1, 1)
@@ -192,6 +199,8 @@ public class ArmSubsystem extends SubsystemBase {
     shuffleboardGrabberState.setBoolean(getGrabberClosed());
     // grabber up/down
     shuffleboardGrabberFlip.setBoolean(flipPiston.get());
+    // grabber holding
+    shuffleboardFlipSensor.setBoolean(getFlipSensor());
     // node switch
     shuffleboardCubeMode.setBoolean(cubeMode);
     // arm hard stop hit
@@ -274,6 +283,7 @@ public class ArmSubsystem extends SubsystemBase {
         speed = 0;
       }
     }
+    armState = armStates[6];
     leftArmMotor.set(speed);
   }
   //public void RunToPosition(double setpoint)
@@ -342,6 +352,21 @@ public class ArmSubsystem extends SubsystemBase {
   // public void ArmConeMode() {
   //   cubeMode = false;
   // }
+  public boolean getPassThrough() {
+    return (getArmEncoder() > Constants.ARM.MIN_PASS_THROUGH) && (getArmEncoder() < Constants.ARM.MAX_PASS_THROUGH);
+  }
+
+  public boolean getMinPassThrough() {
+    return getArmEncoder() < Constants.ARM.MIN_PASS_THROUGH;
+  }
+
+  public boolean getMaxPassThrough() {
+    return getArmEncoder() > Constants.ARM.MAX_PASS_THROUGH;
+  }
+
+  public double getArmEncoder() {
+    return leftArmEncoder.getPosition();
+  }
 
   public double getArmP() {
     return armPIDController.getP();
@@ -369,6 +394,10 @@ public class ArmSubsystem extends SubsystemBase {
 
   public boolean getGrabberClosed() {
     return leftGrabberPiston.get() && rightGrabberPiston.get();
+  }
+
+  public boolean getFlipSensor() {
+    return flipSensor.get();
   }
 
   public double getSetpoint() {

@@ -8,21 +8,32 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.ImpiLib2023;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
 public class Arm_Joystick extends CommandBase {
   /** Creates a new ArmJoystick. */
   private ArmSubsystem armSubsystem;
+  private IntakeSubsystem intakeSubsystem;
   private DoubleSupplier armJoystick;
-  public Arm_Joystick(ArmSubsystem armSubsystem, DoubleSupplier armJoystick) {
+
+  public Arm_Joystick(ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem, DoubleSupplier armJoystick) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.armSubsystem = armSubsystem;
     this.armJoystick = armJoystick;
     addRequirements(armSubsystem);
+    addRequirements(intakeSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    if(armSubsystem.getPassThrough()) {
+      intakeSubsystem.FlapOpen();
+    } else {
+      intakeSubsystem.FlapClose();
+    }
+  }
+  
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
