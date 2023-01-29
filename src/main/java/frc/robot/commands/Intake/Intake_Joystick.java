@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands.Intake;
 
 import java.util.function.DoubleSupplier;
@@ -11,9 +7,11 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class Intake_Joystick extends CommandBase {
   /** Creates a new Intake_Joystick. */
+
   private IntakeSubsystem intakeSubsystem;
   private DoubleSupplier reverseSpeed;
   private DoubleSupplier forwardSpeed;
+
   public Intake_Joystick(IntakeSubsystem intakeSubsystem, DoubleSupplier reverseSpeed, DoubleSupplier forwardSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSubsystem = intakeSubsystem;

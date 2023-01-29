@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
@@ -9,6 +5,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -22,8 +19,6 @@ import frc.robot.Constants;
 public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
 
-  // private LEDSubsystem ledSubsystem;
-
   private Solenoid armPiston;
   private Solenoid grabberPiston;
   private Solenoid flipPiston;
@@ -31,8 +26,9 @@ public class ArmSubsystem extends SubsystemBase {
   private CANSparkMax rightArmMotor;
 
   private SparkMaxPIDController armPIDController;
+
   private RelativeEncoder leftArmEncoder;
-  // private DigitalInput flapSensor;
+
   private DigitalInput armLimitSwitch;
   private DigitalInput flipSensor;
 
@@ -40,32 +36,27 @@ public class ArmSubsystem extends SubsystemBase {
   //Cone/cube mode == incorporate LED's. Purple = cube, yellow = cone
   //When purple subtract x amount from setpoint
   private boolean cubeMode = false;
-  //Maybe get rid of
-  // private boolean softStopHit = false;
   //Debugging: shows what position arm is supposed to be in
   public String[] armStates = {"Floor", "Shelf", "Drive", "Low", "Medium", "High", "Joystick"};
-  //Shelf, Drive, Low, Medium, High, Floor
   //Current state
   private String armState;
 
-  final GenericEntry shuffleboardArmKP;
-  final GenericEntry shuffleboardArmKI;
-  final GenericEntry shuffleboardArmKD;
-  final GenericEntry shuffleboardArmKFF;
-  final GenericEntry shuffleboardArmBase;
-  final GenericEntry shuffleboardArmState;
-  final GenericEntry shuffleboardArmEncoder;
-  final GenericEntry shuffleboardSetpoint;
-  final GenericEntry shuffleboardGrabberState;
-  final GenericEntry shuffleboardGrabberFlip;
-  final GenericEntry shuffleboardFlipSensor;
-  final GenericEntry shuffleboardCubeMode;
-  final GenericEntry shuffleboardArmHardStop;
-  final GenericEntry shuffleboardArmSoftStop;
-
+  private final GenericEntry shuffleboardArmP;
+  private final GenericEntry shuffleboardArmI;
+  private final GenericEntry shuffleboardArmD;
+  private final GenericEntry shuffleboardArmFF;
+  private final GenericEntry shuffleboardArmBase;
+  private final GenericEntry shuffleboardArmState;
+  private final GenericEntry shuffleboardArmEncoder;
+  private final GenericEntry shuffleboardSetpoint;
+  private final GenericEntry shuffleboardGrabberState;
+  private final GenericEntry shuffleboardGrabberFlip;
+  private final GenericEntry shuffleboardFlipSensor;
+  private final GenericEntry shuffleboardCubeMode;
+  private final GenericEntry shuffleboardArmHardStop;
 
   public ArmSubsystem() {
-
+    
     // arm extension pistons
     armPiston = new Solenoid(PneumaticsModuleType.REVPH, Constants.PCM.ARM_PISTON);
 
@@ -80,9 +71,9 @@ public class ArmSubsystem extends SubsystemBase {
     // arm encoders
     leftArmEncoder = leftArmMotor.getEncoder();
     // sensors
-    // flapSensor = new DigitalInput(Constants.DIO.FLAP_SENSOR);
     armLimitSwitch = new DigitalInput(Constants.DIO.LIMIT_SWITCH);
     flipSensor = new DigitalInput(Constants.DIO.FLIP_SENSOR);
+    leftArmMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.ARM.ARM_SOFT_STOP);
 
     leftArmMotor.setIdleMode(IdleMode.kBrake);
     rightArmMotor.setIdleMode(IdleMode.kBrake);
@@ -90,28 +81,26 @@ public class ArmSubsystem extends SubsystemBase {
 
     // arm pid
     armPIDController = leftArmMotor.getPIDController();
-    //Get rid of K in constants
     armPIDController.setP(Constants.ARM.P);
     armPIDController.setI(Constants.ARM.I);
     armPIDController.setD(Constants.ARM.D);
     armPIDController.setFF(Constants.ARM.FF);
 
     ShuffleboardTab armTab = Shuffleboard.getTab("Arm");
-    // ShuffleboardTab grabberTab = Shuffleboard.getTab("Grabber");
 
-    shuffleboardArmKP = armTab.add("Arm P:", 0.)
+    shuffleboardArmP = armTab.add("Arm P:", Constants.ARM.P)
         .withPosition(0, 0)
         .withSize(1, 1)
         .getEntry();
-    shuffleboardArmKI = armTab.add("Arm I:", 0.)
+    shuffleboardArmI = armTab.add("Arm I:", Constants.ARM.I)
         .withPosition(0, 0)
         .withSize(1, 1)
         .getEntry();
-    shuffleboardArmKD = armTab.add("Arm D:", 0.)
+    shuffleboardArmD = armTab.add("Arm D:", Constants.ARM.D)
         .withPosition(0, 0)
         .withSize(1, 1)
         .getEntry();
-    shuffleboardArmKFF = armTab.add("Arm FF:", 0.)
+    shuffleboardArmFF = armTab.add("Arm FF:", Constants.ARM.FF)
         .withPosition(0, 0)
         .withSize(1, 1)
         .getEntry();
@@ -151,10 +140,6 @@ public class ArmSubsystem extends SubsystemBase {
         .withPosition(0, 0)
         .withSize(1, 1)
         .getEntry();
-    shuffleboardArmSoftStop = armTab.add("Arm Soft Stop:", false)
-        .withPosition(0, 0)
-        .withSize(1, 1)
-        .getEntry();
   }
 
   @Override
@@ -180,8 +165,6 @@ public class ArmSubsystem extends SubsystemBase {
     shuffleboardCubeMode.setBoolean(cubeMode);
     // arm hard stop hit
     shuffleboardArmHardStop.setBoolean(armLimitSwitch.get());
-    // arm soft stop hit
-    // shuffleboardArmSoftStop.setBoolean(softStopHit);
   }
 
   // arm joystick input
@@ -194,6 +177,57 @@ public class ArmSubsystem extends SubsystemBase {
     }
     armState = armStates[6];
     leftArmMotor.set(speed);
+  }
+
+  // arm to position
+  public void runToPosition(double setpoint) {
+    this.setpoint = setpoint;
+    armPIDController.setReference(setpoint, ControlType.kPosition);
+  }
+
+  public void goToFloorPosition() {
+    setpoint = Constants.ARM.FLOOR_POSITION;
+    armState = armStates[0];
+    runToPosition(setpoint);
+  }
+
+  public void goToShelfPosition() {
+    setpoint = Constants.ARM.SHELF_POSITION;
+    armState = armStates[1];
+    runToPosition(setpoint);
+  }
+  
+  public void goToDrivePosition() {
+    setpoint = Constants.ARM.DRIVE_POSITION;
+    armState = armStates[2];
+    runToPosition(setpoint);
+  }
+
+  public void goToLowNode() {
+    setpoint = Constants.ARM.LOW_NODE;
+    if(cubeMode){
+      setpoint -= Constants.ARM.CUBE_ADJUST;
+    }
+    armState = armStates[3];
+    runToPosition(setpoint);
+  }
+
+  public void goToMediumNode() {
+    setpoint = Constants.ARM.MEDIUM_NODE;
+    if(cubeMode){
+      setpoint -= Constants.ARM.CUBE_ADJUST;
+    }
+    armState = armStates[4];
+    runToPosition(setpoint);
+  }
+
+  public void goToHighNode() {
+    setpoint = Constants.ARM.HIGH_NODE;
+    if(cubeMode){
+      setpoint -= Constants.ARM.CUBE_ADJUST;
+    }
+    armState = armStates[5];
+    runToPosition(setpoint);
   }
 
   // arm stop
@@ -222,65 +256,13 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   // grabber flip lift
-  public void grabberUp() {
+  public void flipUp() {
       flipPiston.set(true);
   }
 
   // grabber flip shut
-  public void grabberDown() {
+  public void flipDown() {
       flipPiston.set(false);
-  }
-
-  // arm to position
-  public void runToPosition(double setpoint, String pos) {
-    this.setpoint = setpoint;
-    armPIDController.setReference(setpoint, ControlType.kPosition);
-    armState = pos;
-  }
-
-  public void goToFloorPosition(){
-    setpoint = Constants.ARM.FLOOR_POSITION;
-    armState = armStates[0];
-    runToPosition(setpoint, armState);
-  }
-
-  public void goToShelfPosition(){
-    setpoint = Constants.ARM.SHELF_POSITION;
-    armState = armStates[1];
-    runToPosition(setpoint, armState);
-  }
-  
-  public void goToDrivePosition(){
-    setpoint = Constants.ARM.DRIVE_POSITION;
-    armState = armStates[2];
-    runToPosition(setpoint, armState);
-  }
-
-  public void goToLowNode(){
-    if(cubeMode){
-      setpoint -= Constants.ARM.CUBE_ADJUST;
-    }
-    setpoint = Constants.ARM.LOW_NODE;
-    armState = armStates[3];
-    runToPosition(setpoint, armState);
-  }
-
-  public void goToMediumNode(){
-    if(cubeMode){
-      setpoint -= Constants.ARM.CUBE_ADJUST;
-    }
-    setpoint = Constants.ARM.MEDIUM_NODE;
-    armState = armStates[4];
-    runToPosition(setpoint, armState);
-  }
-
-  public void goToHighNode(){
-    if(cubeMode){
-      setpoint -= Constants.ARM.CUBE_ADJUST;
-    }
-    setpoint = Constants.ARM.HIGH_NODE;
-    armState = armStates[5];
-    runToPosition(setpoint, armState);
   }
 
   public void cubeMode(boolean cubeMode) {
@@ -301,22 +283,6 @@ public class ArmSubsystem extends SubsystemBase {
 
   public double getArmEncoder() {
     return leftArmEncoder.getPosition();
-  }
-
-  public double getArmP() {
-    return armPIDController.getP();
-  }
-
-  public double getArmI() {
-    return armPIDController.getI();
-  }
-
-  public double getArmD() {
-    return armPIDController.getD();
-  }
-
-  public double getArmFF() {
-    return armPIDController.getFF();
   }
 
   public String getArmState() {
