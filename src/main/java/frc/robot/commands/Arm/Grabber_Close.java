@@ -21,6 +21,6 @@ public class Grabber_Close extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    armSubsystem.GrabberClose();
+    armSubsystem.grabberClose();
   }
 }

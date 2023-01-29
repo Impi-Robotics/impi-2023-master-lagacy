@@ -21,6 +21,6 @@ public class Intake_Stop extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intakeSubsystem.IntakeStop();
+    intakeSubsystem.intakeStop();
   }
 }

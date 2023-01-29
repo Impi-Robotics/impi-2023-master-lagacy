@@ -11,14 +11,11 @@ import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.Chassis.Chassis_ArcadeDrive;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Intake.Intake_Joystick;
 import frc.robot.commands.Limelight.Limelight_AutoAlign;
 import frc.robot.commands.USBCamera.USBCamera_AutoAlign;
 import frc.robot.subsystems.ChassisSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.USBCameraSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -32,19 +29,16 @@ import frc.robot.subsystems.ArmSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final ChassisSubsystem chassisSubsystem = new ChassisSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final USBCameraSubsystem usbCameraSubsystem = new USBCameraSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
   //private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
 
-
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-
+  private final Chassis_ArcadeDrive autoCommand;
   // Xbox Controller Stuff
-	private final XboxController driverController = new XboxController(0);
-	private final XboxController buttonsController = new XboxController(1);
+	private final XboxController driverController = new XboxController(Constants.IO.Driver);
+	private final XboxController buttonsController = new XboxController(Constants.IO.Buttons);
 
 	private final JoystickButton driverA = new JoystickButton(driverController, XboxController.Button.kA.value);
 	private final JoystickButton driverB = new JoystickButton(driverController, XboxController.Button.kB.value);
@@ -85,6 +79,7 @@ public class RobotContainer {
     // Configure the button bindings
     intakeSubsystem.setDefaultCommand(new Intake_Joystick(intakeSubsystem, driverLeftTrigger, driverRightTrigger));
     chassisSubsystem.setDefaultCommand(new Chassis_ArcadeDrive(chassisSubsystem, driverLeftJoystickY, driverRightJoystickX));
+    autoCommand = new Chassis_ArcadeDrive(chassisSubsystem, driverLeftJoystickY, driverRightJoystickX);
     configureButtonBindings();
   }
 
@@ -107,6 +102,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return autoCommand;
   }
 }

@@ -25,8 +25,8 @@ public class Arm_ConeMode extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    ledSubsystem.CubeMode(false);
-    ledSubsystem.ConeMode(true);
-    armSubsystem.CubeMode(ledSubsystem.getCubeMode());
+    ledSubsystem.cubeMode(false);
+    ledSubsystem.coneMode(true);
+    armSubsystem.cubeMode(ledSubsystem.getCubeMode());
   }
 }

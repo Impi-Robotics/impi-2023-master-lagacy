@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -16,41 +15,37 @@ import frc.robot.Constants;
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   private CANSparkMax intakeMotor;
-  private Solenoid leftFlapPiston;
-  private Solenoid rightFlapPiston;
-  private Solenoid leftIntakePiston;
-  private Solenoid rightIntakePiston;
+  private Solenoid flapPiston;
+  private Solenoid intakePiston;
 
   private DigitalInput flapSensor;
 
   public IntakeSubsystem() {
     intakeMotor = new CANSparkMax(Constants.CAN.INTAKE_MOTOR,MotorType.kBrushless);
-    leftFlapPiston = new Solenoid(PneumaticsModuleType.REVPH, Constants.PCM.LEFT_FLAP_PISTON);
-    rightFlapPiston = new Solenoid(PneumaticsModuleType.REVPH, Constants.PCM.RIGHT_FLAP_PISTON);
-    leftIntakePiston = new Solenoid(PneumaticsModuleType.REVPH, Constants.PCM.LEFT_INTAKE_PISTON);
-    rightIntakePiston = new Solenoid(PneumaticsModuleType.REVPH, Constants.PCM.RIGHT_INTAKE_PISTON);
+    flapPiston = new Solenoid(PneumaticsModuleType.REVPH, Constants.PCM.FLAP_PISTON);
+    intakePiston = new Solenoid(PneumaticsModuleType.REVPH, Constants.PCM.INTAKE_PISTON);
 
     flapSensor = new DigitalInput(Constants.DIO.FLAP_SENSOR);
-
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
-  public void IntakeJoystick(double speed){
+  
+  public void intakeJoystick(double speed){
     intakeMotor.set(speed);
   }
 
-  public void IntakeStop() {
+  public void intakeStop() {
     intakeMotor.set(0);
   }
 
-  public void IntakeRun() {
+  public void intakeRun() {
     intakeMotor.set(0.3);
   }
 
-  public void IntakeRunToFlap() {
+  public void intakeRunToFlap() {
     if(!getFlapSensor()) {
       intakeMotor.set(0.7);
     } else {
@@ -58,42 +53,36 @@ public class IntakeSubsystem extends SubsystemBase {
     }
   }
 
-  public void IntakeExtend() {
+  public void intakeExtend() {
     if(!getFlapOpen()) {
-      leftIntakePiston.set(true);
-      rightIntakePiston.set(true);  
+      intakePiston.set(true);
     } else {
-      leftIntakePiston.set(false);
-      rightIntakePiston.set(false);  
+      intakePiston.set(false);
     }
   }
 
-  public void IntakeRetract() {
-    leftIntakePiston.set(false);
-    rightIntakePiston.set(false);
+  public void intakeRetract() {
+    intakePiston.set(false);
   }
 
-  public void FlapOpen() {
+  public void flapOpen() {
     if(!getIntakeExtended()) {
-      leftFlapPiston.set(true);
-      rightFlapPiston.set(true);  
+      flapPiston.set(true);
     } else {
-      leftFlapPiston.set(false);
-      rightFlapPiston.set(false);  
+      flapPiston.set(false);
     }
   }
 
-  public void FlapClose() {
-    leftFlapPiston.set(false);
-    rightFlapPiston.set(false);
+  public void flapClose() {
+    flapPiston.set(false);
   }
 
   public boolean getIntakeExtended() {
-    return leftIntakePiston.get() && rightIntakePiston.get();
+    return intakePiston.get();
   }
 
   public boolean getFlapOpen() {
-    return leftFlapPiston.get() && rightFlapPiston.get();
+    return flapPiston.get();
   }
 
   public boolean getFlapSensor() {

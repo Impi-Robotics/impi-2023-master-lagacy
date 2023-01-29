@@ -25,26 +25,26 @@ public class Arm_RunToDrivePosition extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    armSubsystem.ArmRetract();
-    armSubsystem.GrabberOpen();
-    intakeSubsystem.FlapOpen();
+    armSubsystem.armRetract();
+    armSubsystem.grabberOpen();
+    intakeSubsystem.flapOpen();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    armSubsystem.GoToDrivePosition();
+    armSubsystem.goToDrivePosition();
     if(armSubsystem.getPassThrough()) {
-      intakeSubsystem.FlapOpen();
+      intakeSubsystem.flapOpen();
     } else {
-      intakeSubsystem.FlapClose();
+      intakeSubsystem.flapClose();
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    armSubsystem.ArmStop();
+    armSubsystem.armStop();
   }
 
   // Returns true when the command should end.

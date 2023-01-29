@@ -10,7 +10,6 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -19,17 +18,14 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.LEDSubsystem;
 
 public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
 
   // private LEDSubsystem ledSubsystem;
 
-  private Solenoid leftArmPiston;
-  private Solenoid rightArmPiston;
-  private Solenoid leftGrabberPiston;
-  private Solenoid rightGrabberPiston;
+  private Solenoid armPiston;
+  private Solenoid grabberPiston;
   private Solenoid flipPiston;
   private CANSparkMax leftArmMotor;
   private CANSparkMax rightArmMotor;
@@ -71,12 +67,10 @@ public class ArmSubsystem extends SubsystemBase {
   public ArmSubsystem() {
 
     // arm extension pistons
-    leftArmPiston = new Solenoid(PneumaticsModuleType.REVPH, Constants.PCM.LEFT_ARM_PISTON);
-    rightArmPiston = new Solenoid(PneumaticsModuleType.REVPH, Constants.PCM.RIGHT_ARM_PISTON);
+    armPiston = new Solenoid(PneumaticsModuleType.REVPH, Constants.PCM.ARM_PISTON);
 
     // grabber pistons
-    leftGrabberPiston = new Solenoid(PneumaticsModuleType.REVPH, Constants.PCM.LEFT_GRABBER_PISTON);
-    rightGrabberPiston = new Solenoid(PneumaticsModuleType.REVPH, Constants.PCM.RIGHT_GRABBER_PISTON);
+    grabberPiston = new Solenoid(PneumaticsModuleType.REVPH, Constants.PCM.GRABBER_PISTON);
     flipPiston = new Solenoid(PneumaticsModuleType.REVPH, Constants.PCM.FLIP_GRABBER_PISTON);
 
     // arm maneuvering motors
@@ -89,17 +83,6 @@ public class ArmSubsystem extends SubsystemBase {
     // flapSensor = new DigitalInput(Constants.DIO.FLAP_SENSOR);
     armLimitSwitch = new DigitalInput(Constants.DIO.LIMIT_SWITCH);
     flipSensor = new DigitalInput(Constants.DIO.FLIP_SENSOR);
-
-    // arm position presets
-    //
-    // double setpoint;
-    // double nodeAdjust = 50;
-    // double posFloor = 0;
-    // double posConveyor = 0;
-    // double posHP = 0;
-    // double posNode1 = 0;
-    // double posNode2 = 0;
-    // double posNode3 = 0;
 
     leftArmMotor.setIdleMode(IdleMode.kBrake);
     rightArmMotor.setIdleMode(IdleMode.kBrake);
@@ -179,14 +162,6 @@ public class ArmSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
 
     // Telemetry - SmartDashboard
-    // P
-    shuffleboardArmKP.setDouble(getArmP());
-    // I
-    shuffleboardArmKI.setDouble(getArmI());
-    // D
-    shuffleboardArmKD.setDouble(getArmD());
-    // FF
-    shuffleboardArmKFF.setDouble(getArmFF());
     // arm retracted/extended
     shuffleboardArmBase.setBoolean(getArmExtended());
     // arm pos state
@@ -209,74 +184,8 @@ public class ArmSubsystem extends SubsystemBase {
     // shuffleboardArmSoftStop.setBoolean(softStopHit);
   }
 
-  // arm stop
-  public void ArmStop() {
-    leftArmMotor.set(0.);
-  }
-
-  // arm extension
-  public void ArmExtend() {
-    leftArmPiston.set(true);
-    rightArmPiston.set(true);
-  }
-
-  // arm retraction
-  public void ArmRetract() {
-    leftArmPiston.set(false);
-    rightArmPiston.set(false);
-  }
-
-  // arm piston toggle
-  // public void ArmToggle() {
-  // if(!leftArmPiston.get()) {
-  // ArmExtend();
-  // } else {
-  // ArmRetract();
-  // }
-  // }
-
-  // grabber retraction
-  public void GrabberClose() {
-    leftGrabberPiston.set(true);
-    rightGrabberPiston.set(true);
-  }
-
-  // grabber extension
-  public void GrabberOpen() {
-    leftGrabberPiston.set(false);
-    rightGrabberPiston.set(false);
-  }
-
-  // grabber claw position toggle
-  // public void Grabber_Toggle() {
-  // if(!leftGrabberPiston.get()) {
-  // GrabberClose();
-  // } else {
-  // GrabberOpen();
-  // }
-  // }
-
-  // grabber flip lift
-  public void GrabberUp() {
-      flipPiston.set(true);
-  }
-
-  // grabber flip shut
-  public void GrabberDown() {
-      flipPiston.set(false);
-  }
-
-  // grabber claw position toggle
-  // public void GrabberLatchToggle() {
-  // if(!flipPiston.get()) {
-  // GrabberUp();
-  // } else {
-  // GrabberDown();
-  // }
-  // }
-
   // arm joystick input
-  public void ArmJoystick(double speed) {
+  public void armJoystick(double speed) {
     // can't reach past hard stop
     if (armLimitSwitch.get()) {
       if (speed > 0) {
@@ -286,72 +195,98 @@ public class ArmSubsystem extends SubsystemBase {
     armState = armStates[6];
     leftArmMotor.set(speed);
   }
-  //public void RunToPosition(double setpoint)
+
+  // arm stop
+  public void armStop() {
+    leftArmMotor.set(0.);
+  }
+
+  // arm extension
+  public void armExtend() {
+    armPiston.set(true);
+  }
+
+  // arm retraction
+  public void armRetract() {
+    armPiston.set(false);
+  }
+
+  // grabber retraction
+  public void grabberClose() {
+    grabberPiston.set(true);
+  }
+
+  // grabber extension
+  public void grabberOpen() {
+    grabberPiston.set(false);
+  }
+
+  // grabber flip lift
+  public void grabberUp() {
+      flipPiston.set(true);
+  }
+
+  // grabber flip shut
+  public void grabberDown() {
+      flipPiston.set(false);
+  }
+
   // arm to position
-  public void RunToPosition(double setpoint, String pos) {
+  public void runToPosition(double setpoint, String pos) {
     this.setpoint = setpoint;
     armPIDController.setReference(setpoint, ControlType.kPosition);
     armState = pos;
-    // pid to position
   }
 
-  public void GoToFloorPosition(){
+  public void goToFloorPosition(){
     setpoint = Constants.ARM.FLOOR_POSITION;
     armState = armStates[0];
-    RunToPosition(setpoint, armState);
+    runToPosition(setpoint, armState);
   }
 
-  public void GoToShelfPosition(){
+  public void goToShelfPosition(){
     setpoint = Constants.ARM.SHELF_POSITION;
     armState = armStates[1];
-    RunToPosition(setpoint, armState);
+    runToPosition(setpoint, armState);
   }
   
-  public void GoToDrivePosition(){
+  public void goToDrivePosition(){
     setpoint = Constants.ARM.DRIVE_POSITION;
     armState = armStates[2];
-    RunToPosition(setpoint, armState);
+    runToPosition(setpoint, armState);
   }
 
-  public void GoToLowNode(){
+  public void goToLowNode(){
     if(cubeMode){
       setpoint -= Constants.ARM.CUBE_ADJUST;
     }
     setpoint = Constants.ARM.LOW_NODE;
     armState = armStates[3];
-    RunToPosition(setpoint, armState);
+    runToPosition(setpoint, armState);
   }
 
-  public void GoToMediumNode(){
+  public void goToMediumNode(){
     if(cubeMode){
       setpoint -= Constants.ARM.CUBE_ADJUST;
     }
     setpoint = Constants.ARM.MEDIUM_NODE;
     armState = armStates[4];
-    RunToPosition(setpoint, armState);
+    runToPosition(setpoint, armState);
   }
 
-  public void GoToHighNode(){
+  public void goToHighNode(){
     if(cubeMode){
       setpoint -= Constants.ARM.CUBE_ADJUST;
     }
     setpoint = Constants.ARM.HIGH_NODE;
     armState = armStates[5];
-    RunToPosition(setpoint, armState);
+    runToPosition(setpoint, armState);
   }
 
-  public void CubeMode(boolean cubeMode) {
+  public void cubeMode(boolean cubeMode) {
     this.cubeMode = cubeMode;
   }
 
-  //Put in LED... cone mode and cube mode... need to see it from LED subsystem
-  // public void ArmCubeMode() {
-  //   cubeMode = true;
-  // }
-
-  // public void ArmConeMode() {
-  //   cubeMode = false;
-  // }
   public boolean getPassThrough() {
     return (getArmEncoder() > Constants.ARM.MIN_PASS_THROUGH) && (getArmEncoder() < Constants.ARM.MAX_PASS_THROUGH);
   }
@@ -389,11 +324,11 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public boolean getArmExtended() {
-    return leftArmPiston.get() && rightArmPiston.get();
+    return armPiston.get();
   }
 
   public boolean getGrabberClosed() {
-    return leftGrabberPiston.get() && rightGrabberPiston.get();
+    return grabberPiston.get();
   }
 
   public boolean getFlipSensor() {
@@ -406,9 +341,5 @@ public class ArmSubsystem extends SubsystemBase {
 
   // public boolean getCubeMode() {
   //   return ledSubsystem.getCubeMode();
-  // }
-
-  // public boolean getFlapSensor() {
-  //   return flapSensor.get();
   // }
 }

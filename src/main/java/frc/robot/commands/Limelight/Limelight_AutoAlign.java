@@ -7,8 +7,6 @@ package frc.robot.commands.Limelight;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ChassisSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
-import java.lang.Math;
-import java.util.function.DoubleSupplier;
 
 public class Limelight_AutoAlign extends CommandBase {
 

@@ -5,9 +5,7 @@
 package frc.robot.commands.USBCamera;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ChassisSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.USBCameraSubsystem;
 
 public class USBCamera_AutoAlign extends CommandBase {

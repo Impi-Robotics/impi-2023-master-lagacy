@@ -5,7 +5,6 @@
 package frc.robot.commands.Intake;
 
 import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.ImpiLib2023;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -30,13 +29,13 @@ public class Intake_Joystick extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakeSubsystem.IntakeJoystick(ImpiLib2023.deadzone(forwardSpeed.getAsDouble(), 0.1) - ImpiLib2023.deadzone(reverseSpeed.getAsDouble(), 0.1));
+    intakeSubsystem.intakeJoystick(ImpiLib2023.deadzone(forwardSpeed.getAsDouble(), 0.1) - ImpiLib2023.deadzone(reverseSpeed.getAsDouble(), 0.1));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intakeSubsystem.IntakeStop();
+    intakeSubsystem.intakeStop();
   }
 
   // Returns true when the command should end.

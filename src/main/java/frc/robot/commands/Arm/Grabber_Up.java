@@ -21,7 +21,7 @@ public class Grabber_Up extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    armSubsystem.GrabberUp();
+    armSubsystem.grabberUp();
     
   }
 }

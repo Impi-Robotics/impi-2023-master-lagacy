@@ -25,31 +25,31 @@ public class Arm_RunToShelfPosition extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    armSubsystem.ArmRetract();
-    armSubsystem.GrabberOpen();
-    armSubsystem.GrabberUp();
+    armSubsystem.armRetract();
+    armSubsystem.grabberOpen();
+    armSubsystem.grabberUp();
     if((armSubsystem.getArmState() == armSubsystem.armStates[2]) || ((armSubsystem.getArmState() == armSubsystem.armStates[6]) && armSubsystem.getMinPassThrough())) {
-      intakeSubsystem.FlapOpen();      
+      intakeSubsystem.flapOpen();      
     } else {
-      intakeSubsystem.FlapClose();
+      intakeSubsystem.flapClose();
     }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    armSubsystem.GoToShelfPosition();
+    armSubsystem.goToShelfPosition();
     if(armSubsystem.getPassThrough()) {
-      intakeSubsystem.FlapOpen();
+      intakeSubsystem.flapOpen();
     } else {
-      intakeSubsystem.FlapClose();
+      intakeSubsystem.flapClose();
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    armSubsystem.ArmStop();
+    armSubsystem.armStop();
   }
 
   // Returns true when the command should end.

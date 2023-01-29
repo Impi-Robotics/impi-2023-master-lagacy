@@ -27,29 +27,29 @@ public class LEDSubsystem extends SubsystemBase {
     led.start();
   }
 
-  public void SetLEDBuffer() {
+  public void setLEDBuffer() {
     led.setData(ledBuffer);
   }
 
-  public void SetLEDsToColor(int r, int g, int b) {
+  public void setLEDsToColor(int r, int g, int b) {
     for(var i = 0; i < getLength(); i++) {
         ledBuffer.setRGB(i, r, g, b);
     }
   }
 
-  public void SetLEDsBlue() {
+  public void setLEDsBlue() {
     for(var i = 0; i < getLength(); i++) {
       ledBuffer.setRGB(i, 0, 0, 255);
     }
   }
 
-  public void SetLEDsGreen() {
+  public void setLEDsGreen() {
     for(var i = 0; i < getLength(); i++) {
       ledBuffer.setRGB(i, 0, 255, 0);
     }
   }
 
-  public void LowPosition() {
+  public void lowPosition() {
     for(var i = 0; i < getLength(); i++) {
       if(i < (getLength() / 3)) {
         if(getConeMode()) {
@@ -63,7 +63,7 @@ public class LEDSubsystem extends SubsystemBase {
     }
   }
 
-  public void MediumPosition() {
+  public void mediumPosition() {
     for(var i = 0; i < getLength(); i++) {
       if(i > (getLength() / 3) && i < 2 * (getLength() / 3)) {
         if(getConeMode()) {
@@ -77,7 +77,7 @@ public class LEDSubsystem extends SubsystemBase {
     }
   }
 
-  public void HighPosition() {
+  public void highPosition() {
     for(var i = 0; i < getLength(); i++) {
       if(i > 2 * (getLength() / 3)) {
         if(getConeMode()) {
@@ -91,11 +91,11 @@ public class LEDSubsystem extends SubsystemBase {
     }
   }
 
-  public void ConeMode(boolean coneMode) {
+  public void coneMode(boolean coneMode) {
     this.coneMode = coneMode;
   }
 
-  public void CubeMode(boolean cubeMode) {
+  public void cubeMode(boolean cubeMode) {
     this.cubeMode = cubeMode;
   }
 

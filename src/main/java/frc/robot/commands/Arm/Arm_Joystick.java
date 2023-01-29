@@ -28,9 +28,9 @@ public class Arm_Joystick extends CommandBase {
   @Override
   public void initialize() {
     if(armSubsystem.getPassThrough()) {
-      intakeSubsystem.FlapOpen();
+      intakeSubsystem.flapOpen();
     } else {
-      intakeSubsystem.FlapClose();
+      intakeSubsystem.flapClose();
     }
   }
   
@@ -38,13 +38,13 @@ public class Arm_Joystick extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    armSubsystem.ArmJoystick(ImpiLib2023.deadzone(armJoystick.getAsDouble(), 0.05));
+    armSubsystem.armJoystick(ImpiLib2023.deadzone(armJoystick.getAsDouble(), 0.05));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    armSubsystem.ArmStop();
+    armSubsystem.armStop();
   }
 
   // Returns true when the command should end.
