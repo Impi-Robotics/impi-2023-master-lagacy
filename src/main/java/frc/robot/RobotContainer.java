@@ -5,9 +5,18 @@ import java.util.function.IntSupplier;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.Chassis.Chassis_ArcadeDrive;
 import frc.robot.commands.Intake.Intake_Joystick;
+import frc.robot.commands.LED.ConeMode;
+import frc.robot.commands.LED.CubeLoaded;
+import frc.robot.commands.LED.CubeLoading;
+import frc.robot.commands.LED.CubeMode;
+import frc.robot.commands.LED.ObjectHeld;
+import frc.robot.commands.LED.ObjectVacant;
+import frc.robot.commands.LED.TargetAligned;
+import frc.robot.commands.LED.TargetSeen;
 import frc.robot.commands.USBCamera.USBCamera_AutoAlign;
 import frc.robot.subsystems.ChassisSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.USBCameraSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,6 +30,7 @@ public class RobotContainer {
   private final USBCameraSubsystem usbCameraSubsystem = new USBCameraSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
   private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
+  private final LEDSubsystem ledSubsystem = new LEDSubsystem();
 
   private final Chassis_ArcadeDrive autoCommand;
   // Xbox Controller Stuff
@@ -72,6 +82,14 @@ public class RobotContainer {
     //driverA.whileTrue(new Limelight_AutoAlign(limelightSubsystem, chassisSubsystem, true));
     //driverA.whileFalse(new Limelight_AutoAlign(limelightSubsystem, chassisSubsystem, false));
     driverA.whileTrue(new USBCamera_AutoAlign(usbCameraSubsystem, chassisSubsystem));
+	buttonsA.onTrue(new ConeMode(ledSubsystem));
+	buttonsB.onTrue(new CubeMode(ledSubsystem));
+	buttonsX.onTrue(new CubeLoading(ledSubsystem));
+	buttonsY.onTrue(new CubeLoaded(ledSubsystem));
+	buttonsLeftBumper.onTrue(new ObjectHeld(ledSubsystem));
+	buttonsRightBumper.onTrue(new ObjectVacant(ledSubsystem));
+	buttonsStart.onTrue(new TargetSeen(ledSubsystem));
+	buttonsSelect.onTrue(new TargetAligned(ledSubsystem));
   }
 
   public Command getAutonomousCommand() {
