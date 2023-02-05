@@ -18,10 +18,9 @@ import frc.robot.commands.Swerve.Swerve_DriveField;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class RobotContainer {
-  //Subsystems
-  SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
-  private final LEDSubsystem ledSubsystem = new LEDSubsystem();
-  // Xbox Controller Stuff
+	// Subsystems
+	private final ArmSubsystem armSubsystem = new ArmSubsystem();
+	// Xbox Controller Stuff
 	private final XboxController driverController = new XboxController(Constants.OI.OI_DRIVER_CONTROLLER);
 	private final XboxController buttonsController = new XboxController(Constants.OI.OI_BUTTONS_CONTROLLER);
 
@@ -60,16 +59,8 @@ public class RobotContainer {
 	private final IntSupplier buttonsDpad = () -> buttonsController.getPOV();
 
   public RobotContainer() {
-    //2)
-    // swerveSubsystem.setDefaultCommand(new Swerve_DriveStraight(swerveSubsystem,
-    //                                                       driverLeftJoystickY, 
-    //                                                       driverLeftJoystickX));
-    //4)
-    swerveSubsystem.setDefaultCommand(new Swerve_DriveDumb(swerveSubsystem,
-                                                      driverLeftJoystickY,
-                                                      driverLeftJoystickX,
-                                                      driverRightTrigger,
-                                                      driverLeftTrigger));
+
+	armSubsystem.setDefaultCommand();
 
     configureBindings();
   }
