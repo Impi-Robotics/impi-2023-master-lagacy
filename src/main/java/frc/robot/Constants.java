@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 
 public final class Constants {
   public final class PCM {
@@ -114,36 +115,31 @@ public final class Constants {
             DRIVE_GEAR_RATIO * WHEEL_DIAMETER_METERS * Math.PI / 60.;
   }
 
-  public final static class SWERVE {
-    // Motors
-    public static final double FRONT_RIGHT_ZERO_ANGLE = -1.16;
-    public static final double FRONT_LEFT_ZERO_ANGLE = -2.97;
-    public static final double REAR_RIGHT_ZERO_ANGLE = 2.91;
-    public static final double REAR_LEFT_ZERO_ANGLE = 1.57;
+  public static class Swerve{
+    public static double TURN_MOTOR_ENCODER_TICKS = 4096;
+    //Drive Pid:
+    public static double DRIVE_P = 0.25;
+    public static double DRIVE_I = 0.01;
+    public static double DRIVE_D = 0;
+    //Turn Pid:
+    public static double TURN_P = 0.2;
+    public static double TURN_I = 0.;
+    public static double TURN_D = 0.;
+    //Limits
+    public static final double DRIVE_SMART_CURRENT_LIMIT = 30;
 
-    // Wheel Calculations
-    // Distance between centers of right and left wheels on robot
-    public static final double TRACK_WIDTH = 0.5334;
-    // Distance between front and back wheels on robot
-    public static final double WHEEL_BASE = 0.5334;
+    //Calculations
+    public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(4.);
+    //gear ratio = 6.75... 1/6.75 = 0.1482
+    //public static final double DRIVE_GEAR_RATIO = 0.1482;
+    public static final double DRIVE_GEAR_RATIO = 0.1016;
+    public static final double DRIVE_POSITION_CONVERSION_FACTOR = DRIVE_GEAR_RATIO * Math.PI * WHEEL_DIAMETER_METERS;
+    public static final double DRIVE_RPM_TO_METERS_PER_SECOND = DRIVE_POSITION_CONVERSION_FACTOR / 60;
+    //gear ratio = 0.078... 1/12.8
+    public static final double TURN_GEAR_RATIO = 0.0781;
+    public static final double TURN_ENCODER_ROT_TO_RADIANS = TURN_GEAR_RATIO * 2 * Math.PI;
+    public static final double TURN_RPM_TO_RAD_PER_SECOND = TURN_ENCODER_ROT_TO_RADIANS / 60;
 
-    public static final SwerveDriveKinematics DRIVE_KINEMATICS = new SwerveDriveKinematics(
-            new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2),
-            new Translation2d(WHEEL_BASE / 2, -TRACK_WIDTH / 2),
-            new Translation2d(-WHEEL_BASE / 2, TRACK_WIDTH / 2),
-            new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2));
 
-    public static TrapezoidProfile.Constraints THETA_CONTROLLER_CONSTRAINTS = new TrapezoidProfile.Constraints(
-            CHASSIS.MAX_TURN_ANGULAR_SPEED, CHASSIS.MAX_TURN_ANGULAR_ACCELERATION);
-  }
-
-  public static class LED {
-    public static final int PORT = 0;
-    public static final int LENGTH = 0;
-  }
-
-  public static class IO {
-    public static final int Driver = 0;
-    public static final int Buttons = 1;
   }
 }

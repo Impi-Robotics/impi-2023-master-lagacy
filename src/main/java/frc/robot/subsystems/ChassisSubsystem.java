@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.CHASSIS;
 import frc.robot.Constants.SWERVE;
+import frc.robot.Constants.Swerve;
 
 public class ChassisSubsystem extends SubsystemBase {
     // Sensors
@@ -185,7 +186,7 @@ public class ChassisSubsystem extends SubsystemBase {
     }
 
     public void driveStraight(double xSpeed, double ySpeed) {
-        var swerveModuleStates = SWERVE.DRIVE_KINEMATICS.toSwerveModuleStates(new ChassisSpeeds(xSpeed, ySpeed, 0));
+        var swerveModuleStates = Swerve.DRIVE_KINEMATICS.toSwerveModuleStates(new ChassisSpeeds(xSpeed, ySpeed, 0));
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, CHASSIS.MAX_METERS_PER_SECOND);
 
         swerveFrontLeft.setDesiredState(swerveModuleStates[1]);
