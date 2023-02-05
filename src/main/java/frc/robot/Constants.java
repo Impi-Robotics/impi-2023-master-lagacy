@@ -82,7 +82,11 @@ public final class Constants {
     public static final double TURN_GEAR_RATIO = 0.0781;
     public static final double TURN_ENCODER_ROT_TO_RADIANS = TURN_GEAR_RATIO * 2 * Math.PI;
     public static final double TURN_RPM_TO_RAD_PER_SECOND = TURN_ENCODER_ROT_TO_RADIANS / 60;
-
-
+  }
+  
+  public static class LED {
+    //led
+    public static final int PORT = 0;
+    public static final int LENGTH = 151;
   }
 }

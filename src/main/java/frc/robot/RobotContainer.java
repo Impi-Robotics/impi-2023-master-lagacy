@@ -7,15 +7,20 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.Swerve_TurnToAngle;
+import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.commands.LED.*;
 import frc.robot.commands.Swerve.Swerve_DriveDumb;
 import frc.robot.commands.Swerve.Swerve_DriveStraight;
+import frc.robot.commands.Swerve.Swerve_ResetGyro;
 import frc.robot.commands.Swerve.Swerve_StraightenWheels;
+import frc.robot.commands.Swerve.Swerve_TurnToAngle;
+import frc.robot.commands.Swerve.Swerve_DriveField;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class RobotContainer {
   //Subsystems
   SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
+  private final LEDSubsystem ledSubsystem = new LEDSubsystem();
   // Xbox Controller Stuff
 	private final XboxController driverController = new XboxController(Constants.OI.OI_DRIVER_CONTROLLER);
 	private final XboxController buttonsController = new XboxController(Constants.OI.OI_BUTTONS_CONTROLLER);
@@ -70,9 +75,15 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    //1)
-    buttonsA.onTrue(new Swerve_StraightenWheels(swerveSubsystem));
-    //3)
+    buttonsA.onTrue(new CubeModeNotHolding(ledSubsystem));
+	buttonsB.onTrue(new CubeModeHolding(ledSubsystem));
+    buttonsX.onTrue(new ConeModeNotHolding(ledSubsystem));
+	buttonsY.onTrue(new ConeModeHolding(ledSubsystem));
+	buttonsLeftBumper.onTrue(new Aligned(ledSubsystem));
+	buttonsRightBumper.onTrue(new NotAligned(ledSubsystem));
+	driverLBumper.toggleOnTrue(new Swerve_DriveField(swerveSubsystem, driverLeftJoystickX, driverLeftJoystickY, driverRightTrigger, driverLeftTrigger, true));
+    driverA.onTrue(new Swerve_ResetGyro(swerveSubsystem, 90.0));
+	//3)
     //buttonsA.onTrue(new Swerve_TurnToAngle(swerveSubsystem, 90));
   }
 

@@ -102,6 +102,11 @@ public class SwerveSubsystem extends SubsystemBase {
     return navx.getAngle();
   }
 
+  public void setGyroAngle(double angle) {
+    navx.reset();
+    navx.setAngleAdjustment(angle);
+}
+
   //TEST Methods
   //1)
   /*
@@ -155,7 +160,7 @@ public class SwerveSubsystem extends SubsystemBase {
   /*
    * Drive method.. field oriented
    */
-  public void swerveDrive(double xSpeed, double ySpeed, double rot, boolean fieldRelative){
+  public void swerveDriveField(double xSpeed, double ySpeed, double rot, boolean fieldRelative){
     double currentAngle = getGyroAngle();
     dController.enableContinuousInput(-180, 180);
     var swerveModuleStates = CHASSIS.SWERVE_DRIVE_KINEMATICS.toSwerveModuleStates(
