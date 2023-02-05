@@ -82,7 +82,7 @@ public final class Constants {
   public static class LED {
     //led
     public static final int PORT = 0;
-    public static final int LENGTH = 0;
+    public static final int LENGTH = 151;
   }
 
   public static class OperatorConstants {

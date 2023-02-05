@@ -37,29 +37,59 @@ public class LEDSubsystem extends SubsystemBase {
     }
   }
 
-  public void SetLEDsBlue() {
+
+  //Cube LEDs
+  public void SetLEDsCubeModeNotHolding() {
     for(var i = 0; i < getLength(); i++) {
-      ledBuffer.setRGB(i, 0, 0, 255);
+      ledBuffer.setRGB(i, 160,  30, 240);//Purple
     }
   }
 
-  public void SetLEDsGreen() {
+  public void SetLEDsCubeModeHolding() {
     for(var i = 0; i < getLength(); i++) {
-      ledBuffer.setRGB(i, 0, 255, 0);
+      ledBuffer.setRGB(i, 0,  0, 255);//Blue
     }
   }
 
-  public void LowPosition() {
+
+  //Cone LEDs
+  public void SetLEDsConeModeNotHolding() {
+    for(var i = 0; i < getLength(); i++) {
+      ledBuffer.setRGB(i, 100,  64, 0);//Orange
+    }
+  }
+
+  public void SetLEDsConeModeHolding() {
+    for(var i = 0; i < getLength(); i++) {
+      ledBuffer.setRGB(i, 100,  100, 0);//Yellow
+    }
+  }
+
+  //Aligned LEDs
+  public void SetLEDsAligned() {
+    for(var i = 0; i < getLength(); i++) {
+      ledBuffer.setRGB(i, 0, 255, 0);//Green
+    }
+  }
+
+  public void SetLEDsNotAligned() {
+    for(var i = 0; i < getLength(); i++) {
+      ledBuffer.setRGB(i, 255,  0, 0);//Red
+    }
+  }
+
+  
+
+  
+
+  
+
+  public void LowPosition(int r, int g, int b) {
     for(var i = 0; i < getLength(); i++) {
       if(i < (getLength() / 3)) {
-        if(getConeMode()) {
-          ledBuffer.setRGB(i, 255, 255, 0);
-        } else if(getCubeMode()) {
-          ledBuffer.setRGB(i, 160, 32, 240);
-        }
-      } else {
-        ledBuffer.setRGB(i, 0, 0, 0);
+        ledBuffer.setRGB(i, r, g, b);
       }
+      led.setData(ledBuffer);
     }
   }
 
@@ -74,6 +104,7 @@ public class LEDSubsystem extends SubsystemBase {
       } else {
         ledBuffer.setRGB(i, 0, 0, 0);
       }
+      led.setData(ledBuffer);
     }
   }
 
@@ -88,6 +119,7 @@ public class LEDSubsystem extends SubsystemBase {
       } else {
         ledBuffer.setRGB(i, 0, 0, 0);
       }
+      led.setData(ledBuffer);
     }
   }
 

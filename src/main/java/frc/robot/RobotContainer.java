@@ -6,7 +6,6 @@ package frc.robot;
 
 import java.util.function.DoubleSupplier;
 import java.util.function.IntSupplier;
-
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -15,9 +14,11 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Intake.Intake_Joystick;
 import frc.robot.commands.Limelight.Limelight_AutoAlign;
 import frc.robot.commands.USBCamera.USBCamera_AutoAlign;
+import frc.robot.commands.LED.*;
 import frc.robot.subsystems.ChassisSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.USBCameraSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -37,6 +38,7 @@ public class RobotContainer {
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final USBCameraSubsystem usbCameraSubsystem = new USBCameraSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
+  private final LEDSubsystem ledSubsystem = new LEDSubsystem();
   //private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
 
 
@@ -98,6 +100,12 @@ public class RobotContainer {
     //driverA.whileTrue(new Limelight_AutoAlign(limelightSubsystem, chassisSubsystem, true));
     //driverA.whileFalse(new Limelight_AutoAlign(limelightSubsystem, chassisSubsystem, false));
     driverA.whileTrue(new USBCamera_AutoAlign(usbCameraSubsystem, chassisSubsystem));
+    buttonsA.onTrue(new CubeModeNotHolding(ledSubsystem));
+	  buttonsB.onTrue(new CubeModeHolding(ledSubsystem));
+	  buttonsX.onTrue(new ConeModeNotHolding(ledSubsystem));
+	  buttonsY.onTrue(new ConeModeHolding(ledSubsystem));
+	  buttonsLeftBumper.onTrue(new Aligned(ledSubsystem));
+	  buttonsRightBumper.onTrue(new NotAligned(ledSubsystem));
   }
 
   /**
