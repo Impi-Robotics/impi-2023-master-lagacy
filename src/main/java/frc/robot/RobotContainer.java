@@ -4,25 +4,20 @@ import java.util.function.DoubleSupplier;
 import java.util.function.IntSupplier;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.commands.LED.*;
-import frc.robot.commands.Swerve.Swerve_DriveDumb;
-import frc.robot.commands.Swerve.Swerve_DriveStraight;
-import frc.robot.commands.Swerve.Swerve_ResetGyro;
-import frc.robot.commands.Swerve.Swerve_StraightenWheels;
-import frc.robot.commands.Swerve.Swerve_TurnToAngle;
-import frc.robot.commands.Swerve.Swerve_DriveField;
-import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.commands.Arm.*;
 
 public class RobotContainer {
-	// Subsystems
-	private final ArmSubsystem armSubsystem = new ArmSubsystem();
-	// Xbox Controller Stuff
-	private final XboxController driverController = new XboxController(Constants.OI.OI_DRIVER_CONTROLLER);
-	private final XboxController buttonsController = new XboxController(Constants.OI.OI_BUTTONS_CONTROLLER);
+
+  // The robot's subsystems and commands are defined here...
+  private final ArmSubsystem armSubsystem = new ArmSubsystem();
+  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+
+  // Xbox Controller Stuff
+	private final XboxController driverController = new XboxController(Constants.OI.DRIVER_CONTROLLER);
+	private final XboxController buttonsController = new XboxController(Constants.OI.BUTTONS_CONTROLLER);
 
 	private final JoystickButton driverA = new JoystickButton(driverController, XboxController.Button.kA.value);
 	private final JoystickButton driverB = new JoystickButton(driverController, XboxController.Button.kB.value);
@@ -60,29 +55,19 @@ public class RobotContainer {
 
   public RobotContainer() {
 
-	armSubsystem.setDefaultCommand();
-
+	armSubsystem.setDefaultCommand(new Arm_Joystick(armSubsystem, intakeSubsystem, buttonsLeftJoystickY));
     configureBindings();
   }
 
   private void configureBindings() {
-    buttonsA.onTrue(new CubeModeNotHolding(ledSubsystem));
-	buttonsB.onTrue(new CubeModeHolding(ledSubsystem));
-    buttonsX.onTrue(new ConeModeNotHolding(ledSubsystem));
-	buttonsY.onTrue(new ConeModeHolding(ledSubsystem));
-	buttonsLeftBumper.onTrue(new Aligned(ledSubsystem));
-	buttonsRightBumper.onTrue(new NotAligned(ledSubsystem));
-	driverLBumper.toggleOnTrue(new Swerve_DriveField(swerveSubsystem, driverLeftJoystickX, driverLeftJoystickY, driverRightTrigger, driverLeftTrigger, true));
-    driverA.onTrue(new Swerve_ResetGyro(swerveSubsystem, 90.0));
-	//3)
-    //buttonsA.onTrue(new Swerve_TurnToAngle(swerveSubsystem, 90));
+	buttonsA.toggleOnTrue(new Arm_Extend(armSubsystem));
+	buttonsA.toggleOnFalse(new Arm_Retract(armSubsystem));
+	buttonsB.toggleOnTrue(new Grabber_Close(armSubsystem));
+	buttonsB.toggleOnFalse(new Grabber_Open(armSubsystem));
+	buttonsX.toggleOnTrue(new Grabber_Up(armSubsystem));
+	buttonsX.toggleOnFalse(new Grabber_Down(armSubsystem));
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return null;
