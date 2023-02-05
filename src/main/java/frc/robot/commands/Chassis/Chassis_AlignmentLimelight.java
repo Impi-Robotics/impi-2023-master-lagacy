@@ -6,25 +6,25 @@ package frc.robot.commands.Chassis;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.subsystems.ChassisSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Chassis_AlignmentLimelight extends SequentialCommandGroup {
-  private ChassisSubsystem chassisSubsystem;
+  private SwerveSubsystem swerveSubsystem;
   private LimelightSubsystem limelightSubsystem;
   /** Creates a new Chassis_AlignmentLimelight. */
   public Chassis_AlignmentLimelight() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new Chassis_TurnToTarget(chassisSubsystem),
+      new Chassis_TurnToTarget(swerveSubsystem),
       new WaitCommand(0.5),
-      new Chassis_StrafeToTarget(chassisSubsystem, limelightSubsystem),
+      new Chassis_StrafeToTarget(swerveSubsystem, limelightSubsystem),
       new WaitCommand(0.5), 
-      new Chassis_DriveToTarget(chassisSubsystem)
+      new Chassis_DriveToTarget(swerveSubsystem)
     );
   }
 }

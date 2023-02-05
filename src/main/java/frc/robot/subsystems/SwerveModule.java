@@ -35,7 +35,7 @@ public class SwerveModule {
     //             Constants.CHASSIS.MAX_METERS_PER_SECOND,
     //             Constants.CHASSIS.MAX_METERS_PER_SECOND_SQUARED));
     private final PIDController drivePidController = new PIDController(
-        Constants.Swerve.DRIVE_P,Constants.Swerve.DRIVE_I, Constants.Swerve.DRIVE_D);
+        Constants.SWERVE.DRIVE_P,Constants.SWERVE.DRIVE_I, Constants.SWERVE.DRIVE_D);
     private final PIDController turnPidController;
     private double zeroAngle;
     private String moduleName;
@@ -67,14 +67,14 @@ public class SwerveModule {
         driveMotor.setInverted(isInverted);
 
         driveEncoder = driveMotor.getEncoder();
-        driveEncoder.setPositionConversionFactor(Constants.Swerve.DRIVE_POSITION_CONVERSION_FACTOR);
-        driveEncoder.setVelocityConversionFactor(Constants.Swerve.DRIVE_RPM_TO_METERS_PER_SECOND);
+        driveEncoder.setPositionConversionFactor(Constants.SWERVE.DRIVE_POSITION_CONVERSION_FACTOR);
+        driveEncoder.setVelocityConversionFactor(Constants.SWERVE.DRIVE_RPM_TO_METERS_PER_SECOND);
 
         turnAbsoluteEncoder = new AnalogInput(turnEncoderAnalogPort);
         turnPidController = new PIDController(
-            Constants.Swerve.TURN_P, 
-            Constants.Swerve.TURN_I,
-            Constants.Swerve.TURN_D);
+            Constants.SWERVE.TURN_P, 
+            Constants.SWERVE.TURN_I,
+            Constants.SWERVE.TURN_D);
         turnPidController.enableContinuousInput(-Math.PI, Math.PI);
         this.zeroAngle = turnZeroAngle;
         //Might need for conversion factors to actually work...
@@ -104,7 +104,7 @@ public class SwerveModule {
     }
     public double getTurnAngleRadians(){
         double angle = getTurnEncoderValue();
-        angle = angle / Constants.Swerve.TURN_MOTOR_ENCODER_TICKS;
+        angle = angle / Constants.SWERVE.TURN_MOTOR_ENCODER_TICKS;
         angle = -Math.PI * 2 * (angle - 0.5) - zeroAngle;
          if(angle < -Math.PI){
              angle += 2 * Math.PI;

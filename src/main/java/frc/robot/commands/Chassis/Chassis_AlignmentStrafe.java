@@ -4,44 +4,35 @@
 
 package frc.robot.commands.Chassis;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SwerveSubsystem;
 
-public class ChassisStraightenWheels extends CommandBase {
-  /** Creates a new ChassisStraightenWheels. */
-  private final SwerveSubsystem swerveSubsystem;
-  private final Timer timer = new Timer();
-  public ChassisStraightenWheels(SwerveSubsystem swerveSubsystem) {
-    this.swerveSubsystem = swerveSubsystem;
-    
+public class Chassis_AlignmentStrafe extends CommandBase {
+  /** Creates a new Chassis_AllignmentStrafe. */
+  private SwerveSubsystem swerveSubsystem;
+  public Chassis_AlignmentStrafe(SwerveSubsystem swerveSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.swerveSubsystem = swerveSubsystem;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timer.reset();
-    timer.start();
+    
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    swerveSubsystem.straightenWheels();
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (timer.get() > 1.) {
-      return true;
-    }
     return false;
   }
 }

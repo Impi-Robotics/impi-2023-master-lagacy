@@ -3,14 +3,9 @@ package frc.robot;
 import java.util.function.DoubleSupplier;
 import java.util.function.IntSupplier;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.Chassis.Chassis_AlignmentLimelight;
 import frc.robot.commands.Chassis.Chassis_ArcadeDrive;
-import frc.robot.commands.Intake.Intake_Joystick;
-import frc.robot.commands.LED.*;
 import frc.robot.commands.Limelight.*;
-import frc.robot.commands.USBCamera.USBCamera_AutoAlign;
-import frc.robot.subsystems.ChassisSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.USBCameraSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,17 +22,13 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   //Subsystems
   private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
-  private final ChassisSubsystem chassisSubsystem = new ChassisSubsystem();
-  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final USBCameraSubsystem usbCameraSubsystem = new USBCameraSubsystem();
-  private final ArmSubsystem armSubsystem = new ArmSubsystem();
   private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
-  private final LEDSubsystem ledSubsystem = new LEDSubsystem();
 
-  private final Chassis_ArcadeDrive autoCommand;
+//   private final Chassis_ArcadeDrive autoCommand;
   // Xbox Controller Stuff
-	private final XboxController driverController = new XboxController(Constants.IO.Driver);
-	private final XboxController buttonsController = new XboxController(Constants.IO.Buttons);
+	private final XboxController driverController = new XboxController(Constants.OI.DRIVER_CONTROLLER);
+	private final XboxController buttonsController = new XboxController(Constants.OI.BUTTONS_CONTROLLER);
 
 	private final JoystickButton driverA = new JoystickButton(driverController, XboxController.Button.kA.value);
 	private final JoystickButton driverB = new JoystickButton(driverController, XboxController.Button.kB.value);
@@ -74,33 +65,21 @@ public class RobotContainer {
 	private final IntSupplier buttonsDpad = () -> buttonsController.getPOV();
 
   public RobotContainer() {
-    intakeSubsystem.setDefaultCommand(new Intake_Joystick(intakeSubsystem, driverLeftTrigger, driverRightTrigger));
-    chassisSubsystem.setDefaultCommand(new Chassis_ArcadeDrive(chassisSubsystem, driverLeftJoystickY, driverRightJoystickX));
-    autoCommand = new Chassis_ArcadeDrive(chassisSubsystem, driverLeftJoystickY, driverRightJoystickX);
+    // autoCommand = new Chassis_ArcadeDrive(swerveSubsystem, driverLeftJoystickY, driverRightJoystickX);
     swerveSubsystem.setDefaultCommand(new Swerve_DriveDumb(swerveSubsystem,
                                                       driverLeftJoystickY,
                                                       driverLeftJoystickX,
                                                       driverRightTrigger,
                                                       driverLeftTrigger));
-
+	
     configureBindings();
   }
 
   private void configureBindings() {
-    buttonsA.onTrue(new Swerve_StraightenWheels(swerveSubsystem));
+    driverA.onTrue(new Swerve_StraightenWheels(swerveSubsystem));
     //buttonsA.onTrue(new Swerve_TurnToAngle(swerveSubsystem, 90));
-    driverRBumper.whileTrue(new Limelight_AutoAlign(limelightSubsystem, chassisSubsystem, true));
-    driverRBumper.whileFalse(new Limelight_AutoAlign(limelightSubsystem, chassisSubsystem, false));
-    driverA.whileTrue(new USBCamera_AutoAlign(usbCameraSubsystem, chassisSubsystem));
-  	driverLBumper.toggleOnTrue(new PipelineSwitch(limelightSubsystem));
-	  buttonsA.onTrue(new ConeMode(ledSubsystem));
-  	buttonsB.onTrue(new CubeMode(ledSubsystem));
-	  buttonsX.onTrue(new CubeLoading(ledSubsystem));
-  	buttonsY.onTrue(new CubeLoaded(ledSubsystem));
-	  buttonsLeftBumper.onTrue(new ObjectHeld(ledSubsystem));
-  	buttonsRightBumper.onTrue(new ObjectVacant(ledSubsystem));
-  	buttonsStart.onTrue(new TargetSeen(ledSubsystem));
-	  buttonsSelect.onTrue(new TargetAligned(ledSubsystem));
+	buttonsA.onTrue(new PipelineSwitch(limelightSubsystem));
+	buttonsB.onTrue(new Chassis_AlignmentLimelight());
   }
 
   public Command getAutonomousCommand() {

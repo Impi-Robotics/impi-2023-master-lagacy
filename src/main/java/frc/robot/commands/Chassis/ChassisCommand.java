@@ -2,7 +2,7 @@ package frc.robot.commands.Chassis;
 
 import frc.robot.Constants;
 import frc.robot.ImpiLib2023;
-import frc.robot.subsystems.ChassisSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class ChassisCommand extends CommandBase {
     
-    private final ChassisSubsystem m_subsystem;
+    private final SwerveSubsystem m_subsystem;
     private final LimelightSubsystem limelightSubsystem;
 
     private DoubleSupplier turnTriggerLeft;
@@ -23,7 +23,7 @@ public class ChassisCommand extends CommandBase {
     private JoystickButton driverLBumper;
     boolean trackTarget;
 
-    public ChassisCommand(ChassisSubsystem subsystem, LimelightSubsystem limelightSubsystem,
+    public ChassisCommand(SwerveSubsystem subsystem, LimelightSubsystem limelightSubsystem,
             DoubleSupplier turnTriggerLeft, DoubleSupplier turnTriggerRight,
             DoubleSupplier driveJoystickX, DoubleSupplier driveJoystickY, DoubleSupplier rotateJoystickX,
             DoubleSupplier rotateJoystickY, JoystickButton driverRBumper, JoystickButton driverLBumper) {
@@ -75,7 +75,7 @@ public class ChassisCommand extends CommandBase {
             }
         }
         boolean fieldOriented = !driverLBumper.getAsBoolean();
-        m_subsystem.drive(-xValue, -yValue, rotation, fieldOriented, driverRBumper.getAsBoolean(), stickUsed);
+        m_subsystem.dumbDrive(-xValue, -yValue, rotation);
     }
 
     @Override

@@ -3,21 +3,21 @@ package frc.robot.commands.Chassis;
 import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.ImpiLib2023;
-import frc.robot.subsystems.ChassisSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 
 public class Chassis_ArcadeDrive extends CommandBase {
 
-  private ChassisSubsystem chassisSubsystem;
+  private SwerveSubsystem swerveSubsystem;
   private DoubleSupplier ySpeed;
   private DoubleSupplier rotation;
 
   /** Creates a new Chassis_ArcadeDrive. */
-  public Chassis_ArcadeDrive(ChassisSubsystem chassisSubsystem, DoubleSupplier ySpeed, DoubleSupplier rotation) {
+  public Chassis_ArcadeDrive(SwerveSubsystem swerveSubsystem, DoubleSupplier ySpeed, DoubleSupplier rotation) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.chassisSubsystem = chassisSubsystem;
+    this.swerveSubsystem = swerveSubsystem;
     this.ySpeed = ySpeed;
     this.rotation = rotation;
-    addRequirements(chassisSubsystem);
+    addRequirements(swerveSubsystem);
   }
 
   // Called when the command is initially scheduled.

@@ -1,19 +1,19 @@
 package frc.robot.commands.Chassis;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ChassisSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 
 public class ChassisDriveStraight extends CommandBase {
 
-    private final ChassisSubsystem chassisSubsystem;
+    private final SwerveSubsystem swerveSubsystem;
     private final double xSpeed;
     private final double ySpeed;
 
-    public ChassisDriveStraight(ChassisSubsystem chassisSubsystem, double xSpeed, double ySpeed) {
-        this.chassisSubsystem = chassisSubsystem;
+    public ChassisDriveStraight(SwerveSubsystem swerveSubsystem, double xSpeed, double ySpeed) {
+        this.swerveSubsystem = swerveSubsystem;
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
-        addRequirements(chassisSubsystem);
+        addRequirements(swerveSubsystem);
     }
 
     @Override
@@ -22,12 +22,12 @@ public class ChassisDriveStraight extends CommandBase {
 
     @Override
     public void execute() {
-        chassisSubsystem.driveStraight(xSpeed, ySpeed);
+        swerveSubsystem.driveStraight(xSpeed, ySpeed);
     }
 
     @Override
     public void end(boolean interrupted) {
-        chassisSubsystem.stop();
+        swerveSubsystem.stop();
     }
 
     @Override

@@ -23,6 +23,8 @@ public class SwerveSubsystem extends SubsystemBase {
   
   private AHRS navx;
 
+  // PID Controllers
+  private double desiredAngle = 0;
   private PIDController dController;
 
   private final GenericEntry shuffleboardGyroAngle;
@@ -34,7 +36,7 @@ public class SwerveSubsystem extends SubsystemBase {
       "Front Left",
       Constants.CAN.CHASSIS_FRONT_LEFT_DRIVE_MOTOR,
       Constants.CAN.CHASSIS_FRONT_LEFT_TURN_MOTOR, 
-      Constants.AI.CHASSIS_FRONT_LEFT_SWERVE_ENCODER,
+      Constants.AI.CHASSIS_FRONT_LEFT_DRIVE_ENCODER,
       Constants.CHASSIS.SWERVE_FRONT_LEFT_ZERO_ANGLE,
       false
       );
@@ -42,7 +44,7 @@ public class SwerveSubsystem extends SubsystemBase {
       "Front RIGHT",
       Constants.CAN.CHASSIS_FRONT_RIGHT_DRIVE_MOTOR,
       Constants.CAN.CHASSIS_FRONT_RIGHT_TURN_MOTOR, 
-      Constants.AI.CHASSIS_FRONT_RIGHT_SWERVE_ENCODER,
+      Constants.AI.CHASSIS_FRONT_RIGHT_DRIVE_ENCODER,
       Constants.CHASSIS.SWERVE_FRONT_RIGHT_ZERO_ANGLE,
       true
       );
@@ -50,16 +52,16 @@ public class SwerveSubsystem extends SubsystemBase {
       "Back Left",
       Constants.CAN.CHASSIS_BACK_LEFT_DRIVE_MOTOR,
       Constants.CAN.CHASSIS_BACK_LEFT_TURN_MOTOR, 
-      Constants.AI.CHASSIS_BACK_LEFT_SWERVE_ENCODER,
-      Constants.CHASSIS.SWERVE_REAR_LEFT_ZERO_ANGLE,
+      Constants.AI.CHASSIS_BACK_LEFT_DRIVE_ENCODER,
+      Constants.CHASSIS.SWERVE_BACK_LEFT_ZERO_ANGLE,
       false
       );
     backRightSwerve = new SwerveModule(
       "Back RIGHT",
       Constants.CAN.CHASSIS_BACK_RIGHT_DRIVE_MOTOR,
       Constants.CAN.CHASSIS_BACK_RIGHT_TURN_MOTOR, 
-      Constants.AI.CHASSIS_BACK_RIGHT_SWERVE_ENCODER,
-      Constants.CHASSIS.SWERVE_REAR_RIGHT_ZERO_ANGLE,
+      Constants.AI.CHASSIS_BACK_RIGHT_DRIVE_ENCODER,
+      Constants.CHASSIS.SWERVE_BACK_RIGHT_ZERO_ANGLE,
       false
       );
       
@@ -174,10 +176,57 @@ public class SwerveSubsystem extends SubsystemBase {
     backRightSwerve.setDesiredState(swerveModuleStates[3]);
   }
 
+  public void rotateToTarget(){
+    desiredAngle = 0;
+    double rot = dController.calculate(getAngle(), desiredAngle);
+    dumbDrive(0, 0, rot);
+  }
+
+  public void strafeToTarget(double xOffset){
+    desiredAngle = 0;
+    double rot = dController.calculate(getAngle(), desiredAngle);
+    // drive(0, 0, rot, true, false, false);
+    if(xOffset > 1 && xOffset < -1) {
+      if(xOffset > 1){
+        dumbDrive(-1, 0, rot);
+      }
+      else if(xOffset < -1){
+        dumbDrive(1, 0, rot);
+      }
+      else{
+        dumbDrive(0, 0, rot);
+      }
+    }
+  }
+
+  public void setGyroAngle(double angle) {
+    desiredAngle = angle;
+  }
+
+  public double getAngle() {
+    return -navx.getAngle();
+  }
+
+  public void updateGyro() {
+    getAngle();
+  }
+
   public void stop(){
     frontLeftSwerve.stop();
     frontRightSwerve.stop();
     backLeftSwerve.stop();
     backRightSwerve.stop();
+  }
+
+  public boolean isTargetCentered(double xOffset) {
+    if(xOffset < 1 && xOffset > -1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  public double setDesiredAngle(double desiredAngle) {
+    return desiredAngle;
   }
 }

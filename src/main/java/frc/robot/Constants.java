@@ -8,8 +8,8 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
   public final class OI {
     // Driver Controllers
-    public static final int OI_DRIVER_CONTROLLER = 0;
-    public static final int OI_BUTTONS_CONTROLLER = 1;
+    public static final int DRIVER_CONTROLLER = 0;
+    public static final int BUTTONS_CONTROLLER = 1;
   }
 
   public final class PCM {
@@ -55,10 +55,10 @@ public final class Constants {
 
   public final class AI {
     // Analog Inputs
-    public static final int FRONT_LEFT_DRIVE_ENCODER = 0;
-    public static final int FRONT_RIGHT_DRIVE_ENCODER = 1;
-    public static final int REAR_LEFT_DRIVE_ENCODER = 2;
-    public static final int REAR_RIGHT_DRIVE_ENCODER = 3;
+    public static final int CHASSIS_FRONT_LEFT_DRIVE_ENCODER = 0;
+    public static final int CHASSIS_FRONT_RIGHT_DRIVE_ENCODER = 1;
+    public static final int CHASSIS_BACK_LEFT_DRIVE_ENCODER = 2;
+    public static final int CHASSIS_BACK_RIGHT_DRIVE_ENCODER = 3;
   }
   
   public static class ARM {
@@ -94,8 +94,8 @@ public final class Constants {
     //Will calculate today
     public static final double SWERVE_FRONT_RIGHT_ZERO_ANGLE = 0.84 + Units.degreesToRadians(5);
     public static final double SWERVE_FRONT_LEFT_ZERO_ANGLE = -3.015 + Units.degreesToRadians(90);
-    public static final double SWERVE_REAR_RIGHT_ZERO_ANGLE = 2.62 + Units.degreesToRadians(8);
-    public static final double SWERVE_REAR_LEFT_ZERO_ANGLE = -1.80 + Units.degreesToRadians(5);
+    public static final double SWERVE_BACK_RIGHT_ZERO_ANGLE = 2.62 + Units.degreesToRadians(8);
+    public static final double SWERVE_BACK_LEFT_ZERO_ANGLE = -1.80 + Units.degreesToRadians(5);
     
     public static final double TRACK_WIDTH = Units.inchesToMeters(19);
     public static final double WHEEL_BASE = Units.inchesToMeters(19);
@@ -113,7 +113,7 @@ public final class Constants {
 
   }
   
-  public static class Swerve{
+  public static class SWERVE{
     public static double TURN_MOTOR_ENCODER_TICKS = 4096;
     //Drive Pid:
     public static double DRIVE_P = 0.25;
@@ -137,6 +137,7 @@ public final class Constants {
     public static final double TURN_GEAR_RATIO = 0.0781;
     public static final double TURN_ENCODER_ROT_TO_RADIANS = TURN_GEAR_RATIO * 2 * Math.PI;
     public static final double TURN_RPM_TO_RAD_PER_SECOND = TURN_ENCODER_ROT_TO_RADIANS / 60;
+  }
 
   public static class LED {
     //led

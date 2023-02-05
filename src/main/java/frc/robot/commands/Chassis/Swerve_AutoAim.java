@@ -7,18 +7,17 @@ package frc.robot.commands.Chassis;
 import org.apache.commons.lang3.function.ToBooleanBiFunction;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ChassisSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
 public class Swerve_AutoAim extends CommandBase {
   /** Creates a new Swerve_AutoAim. */
-  private ChassisSubsystem chassisSubsystem;
+  private SwerveSubsystem swerveSubsystem;
   private LimelightSubsystem limelightSubsystem;
 
-  public Swerve_AutoAim(ChassisSubsystem chassisSubsystem, LimelightSubsystem limelightSubsystem) {
+  public Swerve_AutoAim(SwerveSubsystem swerveSubsystem, LimelightSubsystem limelightSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.chassisSubsystem = chassisSubsystem;
-    this.chassisSubsystem = chassisSubsystem;    
+    this.swerveSubsystem = swerveSubsystem;
   }
 
   // Called when the command is initially scheduled.
@@ -28,20 +27,20 @@ public class Swerve_AutoAim extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    chassisSubsystem.setDesiredAngle(limelightSubsystem.targetXOffset());
-    chassisSubsystem.drive(0., 0., 0., true, true, false);
+    swerveSubsystem.setDesiredAngle(limelightSubsystem.targetXOffset());
+    swerveSubsystem.dumbDrive(0., 0., 0.);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {/*boolean start toString(on)ToBooleanBiFunction iFunction on swerve;*/
-    chassisSubsystem.stop();
+    swerveSubsystem.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (chassisSubsystem.isTargetCentered()) {
+    if (swerveSubsystem.isTargetCentered(limelightSubsystem.targetXOffset())) {
         return true;
     }
     return false;
