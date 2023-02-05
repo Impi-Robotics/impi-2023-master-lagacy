@@ -1,5 +1,9 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+
 public final class Constants {
   public final class PCM {
     // arm
@@ -16,12 +20,18 @@ public final class Constants {
   
   public final class CAN {
     //chassis
-    public static final int LEFT_DRIVE_MOTOR = 0;
-    public static final int RIGHT_DRIVE_MOTOR = 0;
+    public static final int CHASSIS_FRONT_LEFT_DRIVE_MOTOR = 17;
+    public static final int CHASSIS_FRONT_LEFT_TURN_MOTOR = 18;
+    public static final int CHASSIS_FRONT_RIGHT_DRIVE_MOTOR = 11;
+    public static final int CHASSIS_FRONT_RIGHT_TURN_MOTOR = 12;
+    public static final int CHASSIS_REAR_LEFT_DRIVE_MOTOR = 16;
+    public static final int CHASSIS_REAR_LEFT_TURN_MOTOR = 15;
+    public static final int CHASSIS_REAR_RIGHT_DRIVE_MOTOR = 13;
+    public static final int CHASSIS_REAR_RIGHT_TURN_MOTOR = 14;
 
     //arm
-    public static final int LEFT_ARM_MOTOR = 0;
-    public static final int RIGHT_ARM_MOTOR = 0;
+    public static final int ARM_LEFT_MOTOR = 0;
+    public static final int ARM_RIGHT_MOTOR = 0;
 
     //intake
     public static final int INTAKE_MOTOR = 0;
@@ -33,6 +43,14 @@ public final class Constants {
     public static final int LIMIT_SWITCH = 0;
   }
 
+  public final class AI {
+    // Analog Inputs
+    public static final int FRONT_LEFT_DRIVE_ENCODER = 0;
+    public static final int FRONT_RIGHT_DRIVE_ENCODER = 1;
+    public static final int REAR_LEFT_DRIVE_ENCODER = 2;
+    public static final int REAR_RIGHT_DRIVE_ENCODER = 3;
+  }
+  
   public static class ARM {
     public static final int FLOOR_POSITION = 0;
     public static final int DRIVE_POSITION = 0;
@@ -55,6 +73,68 @@ public final class Constants {
     public static final int MAX_PASS_THROUGH = 0;
 
     public static final int ARM_SOFT_STOP = 0;
+  }
+
+  public final class CHASSIS {
+    //AUTO
+    public static final double PATH_DRIVE_P = 1.;
+    public static final double PATH_DRIVE_I = 0.;
+    public static final double PATH_DRIVE_D = 0.; 
+
+    public static final double PATH_THETA_P = 4.;
+    public static final double PATH_THETA_I = 0.;
+    public static final double PATH_THETA_D = 0.;
+    // Drive Motors
+    //0.8
+    public static final double DRIVE_P = 1.5;
+    public static final double DRIVE_I = 0.;
+    public static final double DRIVE_D = 0.;
+
+    public static final int DRIVE_MOTOR_CURRENT_LIMIT = 30;
+
+    // Turn Motors
+    public static final double TURN_P = 0.2;
+    public static final double TURN_I = 0.;
+    public static final double TURN_D = 0.;
+
+    public static final int TURN_MOTOR_CURRENT_LIMIT = 30;
+
+    public static final int TURN_MOTOR_ENCODER_TICKS = 4096;
+
+    // Calculations
+    public static final double MAX_METERS_PER_SECOND = 7;
+    public static final double MAX_METERS_PER_SECOND_SQUARED = 500; // 100
+    public static final double MAX_TURN_ANGULAR_SPEED = 500. * Math.PI;
+    public static final double MAX_TURN_ANGULAR_ACCELERATION = 500. * Math.PI;
+
+    public static final double WHEEL_DIAMETER_METERS = 0.1016;
+    public static final double DRIVE_GEAR_RATIO = 0.1529;
+    public static final double DRIVE_POSITION_CONVERSION_FACTOR = Math.PI * WHEEL_DIAMETER_METERS * DRIVE_GEAR_RATIO;
+    public static final double DRIVE_VELOCITY_CONVERSION_FACTOR = 
+            DRIVE_GEAR_RATIO * WHEEL_DIAMETER_METERS * Math.PI / 60.;
+  }
+
+  public final static class SWERVE {
+    // Motors
+    public static final double FRONT_RIGHT_ZERO_ANGLE = -1.16;
+    public static final double FRONT_LEFT_ZERO_ANGLE = -2.97;
+    public static final double REAR_RIGHT_ZERO_ANGLE = 2.91;
+    public static final double REAR_LEFT_ZERO_ANGLE = 1.57;
+
+    // Wheel Calculations
+    // Distance between centers of right and left wheels on robot
+    public static final double TRACK_WIDTH = 0.5334;
+    // Distance between front and back wheels on robot
+    public static final double WHEEL_BASE = 0.5334;
+
+    public static final SwerveDriveKinematics DRIVE_KINEMATICS = new SwerveDriveKinematics(
+            new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2),
+            new Translation2d(WHEEL_BASE / 2, -TRACK_WIDTH / 2),
+            new Translation2d(-WHEEL_BASE / 2, TRACK_WIDTH / 2),
+            new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2));
+
+    public static TrapezoidProfile.Constraints THETA_CONTROLLER_CONSTRAINTS = new TrapezoidProfile.Constraints(
+            CHASSIS.MAX_TURN_ANGULAR_SPEED, CHASSIS.MAX_TURN_ANGULAR_ACCELERATION);
   }
 
   public static class LED {

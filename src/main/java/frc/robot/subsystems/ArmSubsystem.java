@@ -65,8 +65,8 @@ public class ArmSubsystem extends SubsystemBase {
     flipPiston = new Solenoid(PneumaticsModuleType.REVPH, Constants.PCM.FLIP_GRABBER_PISTON);
 
     // arm maneuvering motors
-    leftArmMotor = new CANSparkMax(Constants.CAN.LEFT_ARM_MOTOR, MotorType.kBrushless);
-    rightArmMotor = new CANSparkMax(Constants.CAN.RIGHT_ARM_MOTOR, MotorType.kBrushless);
+    leftArmMotor = new CANSparkMax(Constants.CAN.ARM_LEFT_MOTOR, MotorType.kBrushless);
+    rightArmMotor = new CANSparkMax(Constants.CAN.ARM_RIGHT_MOTOR, MotorType.kBrushless);
 
     // arm encoders
     leftArmEncoder = leftArmMotor.getEncoder();

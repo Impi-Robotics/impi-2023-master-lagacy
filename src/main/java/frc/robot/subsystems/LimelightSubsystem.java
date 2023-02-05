@@ -12,7 +12,6 @@ public class LimelightSubsystem extends SubsystemBase {
 
   // Network Tables
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-
   // Network Table Values
   NetworkTableEntry txNet = table.getEntry("tx");
   NetworkTableEntry tyNet = table.getEntry("ty");

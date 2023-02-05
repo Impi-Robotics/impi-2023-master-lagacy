@@ -13,6 +13,8 @@ import frc.robot.commands.LED.ObjectHeld;
 import frc.robot.commands.LED.ObjectVacant;
 import frc.robot.commands.LED.TargetAligned;
 import frc.robot.commands.LED.TargetSeen;
+import frc.robot.commands.Limelight.Limelight_AutoAlign;
+import frc.robot.commands.Limelight.PipelineSwitch;
 import frc.robot.commands.USBCamera.USBCamera_AutoAlign;
 import frc.robot.subsystems.ChassisSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -79,9 +81,10 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    //driverA.whileTrue(new Limelight_AutoAlign(limelightSubsystem, chassisSubsystem, true));
-    //driverA.whileFalse(new Limelight_AutoAlign(limelightSubsystem, chassisSubsystem, false));
+    driverRBumper.whileTrue(new Limelight_AutoAlign(limelightSubsystem, chassisSubsystem, true));
+    driverRBumper.whileFalse(new Limelight_AutoAlign(limelightSubsystem, chassisSubsystem, false));
     driverA.whileTrue(new USBCamera_AutoAlign(usbCameraSubsystem, chassisSubsystem));
+	driverLBumper.toggleOnTrue(new PipelineSwitch(limelightSubsystem));
 	buttonsA.onTrue(new ConeMode(ledSubsystem));
 	buttonsB.onTrue(new CubeMode(ledSubsystem));
 	buttonsX.onTrue(new CubeLoading(ledSubsystem));
