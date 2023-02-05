@@ -9,8 +9,8 @@ import java.util.function.IntSupplier;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.Arm.Arm_Extend;
 import frc.robot.commands.Chassis.Chassis_ArcadeDrive;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Intake.Intake_Joystick;
 import frc.robot.commands.Limelight.Limelight_AutoAlign;
 import frc.robot.commands.USBCamera.USBCamera_AutoAlign;
@@ -42,7 +42,8 @@ public class RobotContainer {
   //private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
 
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final Arm_Extend armExtendCommand = new Arm_Extend(armSubsystem);
 
   // Xbox Controller Stuff
 	private final XboxController driverController = new XboxController(0);
@@ -115,6 +116,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return armExtendCommand;
   }
 }
