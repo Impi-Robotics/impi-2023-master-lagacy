@@ -73,10 +73,10 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    buttonsA.onTrue(new CubeModeNotHolding(ledSubsystem));
-	buttonsB.onTrue(new CubeModeHolding(ledSubsystem));
-    buttonsX.onTrue(new ConeModeNotHolding(ledSubsystem));
-	buttonsY.onTrue(new ConeModeHolding(ledSubsystem));
+    buttonsA.onTrue(new SeeTarget(ledSubsystem));
+	buttonsB.onTrue(new Holding(ledSubsystem));
+    buttonsX.onTrue(new ConeMode(ledSubsystem));
+	buttonsY.onTrue(new CubeMode(ledSubsystem));
 	buttonsLeftBumper.onTrue(new Aligned(ledSubsystem));
 	buttonsRightBumper.onTrue(new NotAligned(ledSubsystem));
     //3)
