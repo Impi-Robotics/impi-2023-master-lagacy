@@ -35,20 +35,32 @@ public class LEDSubsystem extends SubsystemBase {
     for(var i = 0; i < getLength(); i++) {
         ledBuffer.setRGB(i, r, g, b);
     }
+    led.setData(ledBuffer);
   }
 
-
+  /*
+   * public void setLEDs(string color){
+   *  switch(color):
+   *    case "Purple":
+   *        for(var i = 0; i < getLength(); i++) {
+              ledBuffer.setRGB(i, 160,  30, 240);//Purple
+            }
+            led.setData(ledBuffer);
+   * }
+   */
   //Cube LEDs
   public void SetLEDsCubeModeNotHolding() {
     for(var i = 0; i < getLength(); i++) {
       ledBuffer.setRGB(i, 160,  30, 240);//Purple
     }
+    led.setData(ledBuffer);
   }
 
   public void SetLEDsCubeModeHolding() {
     for(var i = 0; i < getLength(); i++) {
       ledBuffer.setRGB(i, 0,  0, 255);//Blue
     }
+    led.setData(ledBuffer);
   }
 
 
@@ -57,12 +69,14 @@ public class LEDSubsystem extends SubsystemBase {
     for(var i = 0; i < getLength(); i++) {
       ledBuffer.setRGB(i, 100,  64, 0);//Orange
     }
+    led.setData(ledBuffer);
   }
 
   public void SetLEDsConeModeHolding() {
     for(var i = 0; i < getLength(); i++) {
       ledBuffer.setRGB(i, 100,  100, 0);//Yellow
     }
+    led.setData(ledBuffer);
   }
 
   //Aligned LEDs
@@ -70,12 +84,14 @@ public class LEDSubsystem extends SubsystemBase {
     for(var i = 0; i < getLength(); i++) {
       ledBuffer.setRGB(i, 0, 255, 0);//Green
     }
+    led.setData(ledBuffer);
   }
 
   public void SetLEDsNotAligned() {
     for(var i = 0; i < getLength(); i++) {
       ledBuffer.setRGB(i, 255,  0, 0);//Red
     }
+    led.setData(ledBuffer);
   }
 
   
@@ -83,14 +99,14 @@ public class LEDSubsystem extends SubsystemBase {
   
 
   
-
+//OLD
   public void LowPosition(int r, int g, int b) {
     for(var i = 0; i < getLength(); i++) {
       if(i < (getLength() / 3)) {
         ledBuffer.setRGB(i, r, g, b);
       }
-      led.setData(ledBuffer);
     }
+    led.setData(ledBuffer);
   }
 
   public void MediumPosition() {
@@ -104,8 +120,8 @@ public class LEDSubsystem extends SubsystemBase {
       } else {
         ledBuffer.setRGB(i, 0, 0, 0);
       }
-      led.setData(ledBuffer);
     }
+    led.setData(ledBuffer);
   }
 
   public void HighPosition() {
@@ -122,7 +138,6 @@ public class LEDSubsystem extends SubsystemBase {
       led.setData(ledBuffer);
     }
   }
-
   public void ConeMode(boolean coneMode) {
     this.coneMode = coneMode;
   }

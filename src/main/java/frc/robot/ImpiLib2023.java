@@ -4,7 +4,7 @@ import java.util.function.DoubleSupplier;
 
 public class ImpiLib2023 {
 
-    public static final double defaultDeadzone = 0.1;
+    public static final double defaultDeadzone = 0.05;
 
     public static double clamp(double value, double min, double max) {
         if (value < min) {
