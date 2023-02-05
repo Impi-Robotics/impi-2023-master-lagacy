@@ -61,11 +61,11 @@ public final class Constants {
   public static class Swerve{
     public static double TURN_MOTOR_ENCODER_TICKS = 4096;
     //Drive Pid:
-    public static double DRIVE_P = 1.30;
+    public static double DRIVE_P = 0.25;
     public static double DRIVE_I = 0.01;
     public static double DRIVE_D = 0;
     //Turn Pid:
-    public static double TURN_P = 1.0;
+    public static double TURN_P = 0.2;
     public static double TURN_I = 0.;
     public static double TURN_D = 0.;
     //Limits

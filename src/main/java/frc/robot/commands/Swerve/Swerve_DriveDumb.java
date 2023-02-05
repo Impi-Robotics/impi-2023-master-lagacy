@@ -40,7 +40,7 @@ public class Swerve_DriveDumb extends CommandBase {
   public void execute() {
     double xValue = ImpiLib2023.parseJoystick(xSpeed) * Constants.CHASSIS.MAX_METERS_PER_SECOND;
     double yValue = ImpiLib2023.parseJoystick(ySpeed) * Constants.CHASSIS.MAX_METERS_PER_SECOND;
-    double rotValue = (ImpiLib2023.parseJoystick(rotR) - ImpiLib2023.parseJoystick(rotL)) * 10;
+    double rotValue = (ImpiLib2023.parseJoystick(rotR) - ImpiLib2023.parseJoystick(rotL)) * 7.5;
     xValue = xLimiter.calculate(xValue);
     yValue = yLimiter.calculate(yValue);
     swerveSubsystem.dumbDrive(xValue, -yValue, -rotValue);
