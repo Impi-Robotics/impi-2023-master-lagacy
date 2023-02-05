@@ -28,11 +28,6 @@ public class Swerve_AutoAim extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //while(angleOffset > 2){
-      turnToAngle(0) -> 
-      strafe() -> stop when tx is around 1
-      driveToTarget() -> stop when ta is certain val
-    }
     chassisSubsystem.setDesiredAngle(limelightSubsystem.targetXOffset());
     chassisSubsystem.drive(0., 0., 0., true, true, false);
   }
