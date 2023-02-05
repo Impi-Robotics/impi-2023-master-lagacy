@@ -3,6 +3,7 @@ package frc.robot;
 import java.util.function.DoubleSupplier;
 import java.util.function.IntSupplier;
 import edu.wpi.first.wpilibj.XboxController;
+<<<<<<< HEAD
 import frc.robot.commands.Chassis.Chassis_ArcadeDrive;
 import frc.robot.commands.Intake.Intake_Joystick;
 import frc.robot.commands.LED.ConeMode;
@@ -19,11 +20,24 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.USBCameraSubsystem;
+=======
+>>>>>>> 3822cf92adb4a458c0585f00736e9227fee756a9
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.subsystems.ArmSubsystem;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.commands.LED.*;
+import frc.robot.commands.Swerve.Swerve_DriveDumb;
+import frc.robot.commands.Swerve.Swerve_DriveStraight;
+import frc.robot.commands.Swerve.Swerve_ResetGyro;
+import frc.robot.commands.Swerve.Swerve_StraightenWheels;
+import frc.robot.commands.Swerve.Swerve_TurnToAngle;
+import frc.robot.commands.Swerve.Swerve_DriveField;
+import frc.robot.subsystems.SwerveSubsystem;
 
 public class RobotContainer {
+<<<<<<< HEAD
   // The robot's subsystems and commands are defined here...
   private final ChassisSubsystem chassisSubsystem = new ChassisSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
@@ -36,6 +50,14 @@ public class RobotContainer {
   // Xbox Controller Stuff
 	private final XboxController driverController = new XboxController(Constants.IO.Driver);
 	private final XboxController buttonsController = new XboxController(Constants.IO.Buttons);
+=======
+  //Subsystems
+  SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
+  private final LEDSubsystem ledSubsystem = new LEDSubsystem();
+  // Xbox Controller Stuff
+	private final XboxController driverController = new XboxController(Constants.OI.OI_DRIVER_CONTROLLER);
+	private final XboxController buttonsController = new XboxController(Constants.OI.OI_BUTTONS_CONTROLLER);
+>>>>>>> 3822cf92adb4a458c0585f00736e9227fee756a9
 
 	private final JoystickButton driverA = new JoystickButton(driverController, XboxController.Button.kA.value);
 	private final JoystickButton driverB = new JoystickButton(driverController, XboxController.Button.kB.value);
@@ -72,6 +94,7 @@ public class RobotContainer {
 	private final IntSupplier buttonsDpad = () -> buttonsController.getPOV();
 
   public RobotContainer() {
+<<<<<<< HEAD
     intakeSubsystem.setDefaultCommand(new Intake_Joystick(intakeSubsystem, driverLeftTrigger, driverRightTrigger));
     chassisSubsystem.setDefaultCommand(new Chassis_ArcadeDrive(chassisSubsystem, driverLeftJoystickY, driverRightJoystickX));
     autoCommand = new Chassis_ArcadeDrive(chassisSubsystem, driverLeftJoystickY, driverRightJoystickX);
@@ -90,9 +113,41 @@ public class RobotContainer {
 	buttonsRightBumper.onTrue(new ObjectVacant(ledSubsystem));
 	buttonsStart.onTrue(new TargetSeen(ledSubsystem));
 	buttonsSelect.onTrue(new TargetAligned(ledSubsystem));
+=======
+    //2)
+    // swerveSubsystem.setDefaultCommand(new Swerve_DriveStraight(swerveSubsystem,
+    //                                                       driverLeftJoystickY, 
+    //                                                       driverLeftJoystickX));
+    //4)
+    swerveSubsystem.setDefaultCommand(new Swerve_DriveDumb(swerveSubsystem,
+                                                      driverLeftJoystickY,
+                                                      driverLeftJoystickX,
+                                                      driverRightTrigger,
+                                                      driverLeftTrigger));
+
+    configureBindings();
+  }
+
+  private void configureBindings() {
+    buttonsA.onTrue(new CubeModeNotHolding(ledSubsystem));
+	buttonsB.onTrue(new CubeModeHolding(ledSubsystem));
+    buttonsX.onTrue(new ConeModeNotHolding(ledSubsystem));
+	buttonsY.onTrue(new ConeModeHolding(ledSubsystem));
+	buttonsLeftBumper.onTrue(new Aligned(ledSubsystem));
+	buttonsRightBumper.onTrue(new NotAligned(ledSubsystem));
+	driverLBumper.toggleOnTrue(new Swerve_DriveField(swerveSubsystem, driverLeftJoystickX, driverLeftJoystickY, driverRightTrigger, driverLeftTrigger, true));
+    driverA.onTrue(new Swerve_ResetGyro(swerveSubsystem, 90.0));
+	//3)
+    //buttonsA.onTrue(new Swerve_TurnToAngle(swerveSubsystem, 90));
+>>>>>>> 3822cf92adb4a458c0585f00736e9227fee756a9
   }
 
   public Command getAutonomousCommand() {
+<<<<<<< HEAD
     return autoCommand;
+=======
+    // An example command will be run in autonomous
+    return null;
+>>>>>>> 3822cf92adb4a458c0585f00736e9227fee756a9
   }
 }
