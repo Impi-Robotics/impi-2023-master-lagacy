@@ -29,7 +29,6 @@ public class ArmSubsystem extends SubsystemBase {
 
   private RelativeEncoder leftArmEncoder;
 
-  private DigitalInput armLimitSwitch;
   private DigitalInput flipSensor;
 
   private double setpoint;
@@ -41,10 +40,10 @@ public class ArmSubsystem extends SubsystemBase {
   //Current state
   private String armState;
 
-  private final GenericEntry shuffleboardArmP;
-  private final GenericEntry shuffleboardArmI;
-  private final GenericEntry shuffleboardArmD;
-  private final GenericEntry shuffleboardArmFF;
+  // private final GenericEntry shuffleboardArmP;
+  // private final GenericEntry shuffleboardArmI;
+  // private final GenericEntry shuffleboardArmD;
+  // private final GenericEntry shuffleboardArmFF;
   private final GenericEntry shuffleboardArmBase;
   private final GenericEntry shuffleboardArmState;
   private final GenericEntry shuffleboardArmEncoder;
@@ -53,7 +52,6 @@ public class ArmSubsystem extends SubsystemBase {
   private final GenericEntry shuffleboardGrabberFlip;
   private final GenericEntry shuffleboardFlipSensor;
   private final GenericEntry shuffleboardCubeMode;
-  private final GenericEntry shuffleboardArmHardStop;
 
   public ArmSubsystem() {
     
@@ -70,40 +68,41 @@ public class ArmSubsystem extends SubsystemBase {
 
     // arm encoders
     leftArmEncoder = leftArmMotor.getEncoder();
+
     // sensors
-    armLimitSwitch = new DigitalInput(Constants.DIO.LIMIT_SWITCH);
     flipSensor = new DigitalInput(Constants.DIO.FLIP_SENSOR);
-    leftArmMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.ARM.ARM_SOFT_STOP);
+    leftArmMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.ARM.SOFT_STOP_REVERSE);
+    leftArmMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.ARM.SOFT_STOP_FORWARD);
 
     leftArmMotor.setIdleMode(IdleMode.kBrake);
     rightArmMotor.setIdleMode(IdleMode.kBrake);
     rightArmMotor.follow(leftArmMotor, true);
 
     // arm pid
-    armPIDController = leftArmMotor.getPIDController();
-    armPIDController.setP(Constants.ARM.P);
-    armPIDController.setI(Constants.ARM.I);
-    armPIDController.setD(Constants.ARM.D);
-    armPIDController.setFF(Constants.ARM.FF);
+    // armPIDController = leftArmMotor.getPIDController();
+    // armPIDController.setP(Constants.ARM.P);
+    // armPIDController.setI(Constants.ARM.I);
+    // armPIDController.setD(Constants.ARM.D);
+    // armPIDController.setFF(Constants.ARM.FF);
 
     ShuffleboardTab armTab = Shuffleboard.getTab("Arm");
 
-    shuffleboardArmP = armTab.add("Arm P:", Constants.ARM.P)
-        .withPosition(0, 0)
-        .withSize(1, 1)
-        .getEntry();
-    shuffleboardArmI = armTab.add("Arm I:", Constants.ARM.I)
-        .withPosition(0, 0)
-        .withSize(1, 1)
-        .getEntry();
-    shuffleboardArmD = armTab.add("Arm D:", Constants.ARM.D)
-        .withPosition(0, 0)
-        .withSize(1, 1)
-        .getEntry();
-    shuffleboardArmFF = armTab.add("Arm FF:", Constants.ARM.FF)
-        .withPosition(0, 0)
-        .withSize(1, 1)
-        .getEntry();
+    // shuffleboardArmP = armTab.add("Arm P:", Constants.ARM.P)
+    //     .withPosition(0, 0)
+    //     .withSize(1, 1)
+    //     .getEntry();
+    // shuffleboardArmI = armTab.add("Arm I:", Constants.ARM.I)
+    //     .withPosition(0, 0)
+    //     .withSize(1, 1)
+    //     .getEntry();
+    // shuffleboardArmD = armTab.add("Arm D:", Constants.ARM.D)
+    //     .withPosition(0, 0)
+    //     .withSize(1, 1)
+    //     .getEntry();
+    // shuffleboardArmFF = armTab.add("Arm FF:", Constants.ARM.FF)
+    //     .withPosition(0, 0)
+    //     .withSize(1, 1)
+    //     .getEntry();
     shuffleboardArmBase = armTab.add("Arm Base:", false)
         .withPosition(0, 0)
         .withSize(1, 1)
@@ -136,10 +135,6 @@ public class ArmSubsystem extends SubsystemBase {
         .withPosition(0, 0)
         .withSize(1, 1)
         .getEntry();
-    shuffleboardArmHardStop = armTab.add("Arm Hard Stop:", false)
-        .withPosition(0, 0)
-        .withSize(1, 1)
-        .getEntry();
   }
 
   @Override
@@ -163,26 +158,24 @@ public class ArmSubsystem extends SubsystemBase {
     shuffleboardFlipSensor.setBoolean(getFlipSensor());
     // node switch
     shuffleboardCubeMode.setBoolean(cubeMode);
-    // arm hard stop hit
-    shuffleboardArmHardStop.setBoolean(armLimitSwitch.get());
   }
 
   // arm joystick input
   public void armJoystick(double speed) {
-    // can't reach past hard stop
-    if (armLimitSwitch.get()) {
-      if (speed > 0) {
-        speed = 0;
-      }
-    }
+    // // can't reach past hard stop
+    // if (armLimitSwitch.get()) {
+    //   if (speed > 0) {
+    //     speed = 0;
+    //   }
+    // }
     armState = armStates[6];
     leftArmMotor.set(speed);
   }
 
   // arm to position
   public void runToPosition(double setpoint) {
-    this.setpoint = setpoint;
-    armPIDController.setReference(setpoint, ControlType.kPosition);
+    // this.setpoint = setpoint;
+    // armPIDController.setReference(setpoint, ControlType.kPosition);
   }
 
   public void goToFloorPosition() {

@@ -118,17 +118,18 @@ public final class Constants {
     // Encoder adjustment for cube mode
     public static final int CUBE_ADJUST = 50;
     
-    public static final int P = 0;
-    public static final int I = 0;
-    public static final int D = 0;
-    public static final int FF = 0;
+    // public static final int P = 0;
+    // public static final int I = 0;
+    // public static final int D = 0;
+    // public static final int FF = 0;
 
     // Point nearest to Conveyor/Drive pos when flap should be opened or closed
     public static final int MIN_PASS_THROUGH = 0;
     // Point farthest from Conveyor/Drive pos when flap should be opened or closed
     public static final int MAX_PASS_THROUGH = 0;
 
-    public static final int ARM_SOFT_STOP = 0;
+    public static final int SOFT_STOP_REVERSE = 5;
+    public static final int SOFT_STOP_FORWARD = 10000;
   }
   
   public static final class LED {
