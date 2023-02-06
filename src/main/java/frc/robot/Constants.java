@@ -24,11 +24,11 @@ public final class Constants {
     public static final int CHASSIS_BACK_RIGHT_TURN_MOTOR = 17;
 
     //arm
-    public static final int LEFT_ARM_MOTOR = 0;
-    public static final int RIGHT_ARM_MOTOR = 0;
+    public static final int LEFT_ARM_MOTOR = 20;
+    public static final int RIGHT_ARM_MOTOR = 21;
 
     //intake
-    public static final int INTAKE_MOTOR = 0;
+    public static final int INTAKE_MOTOR = 22;
   }
 
   public static final class PCM {
