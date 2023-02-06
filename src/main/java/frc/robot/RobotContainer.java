@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.commands.Arm.*;
+import frc.robot.commands.Intake.Intake_Joystick;
 
 public class RobotContainer {
 
@@ -56,16 +57,17 @@ public class RobotContainer {
   public RobotContainer() {
 
 	armSubsystem.setDefaultCommand(new Arm_Joystick(armSubsystem, intakeSubsystem, buttonsLeftJoystickY));
+	intakeSubsystem.setDefaultCommand(new Intake_Joystick(intakeSubsystem, buttonsRightTrigger, buttonsLeftTrigger));
     configureBindings();
   }
 
   private void configureBindings() {
-	buttonsA.toggleOnTrue(new Arm_Extend(armSubsystem));
-	buttonsA.toggleOnFalse(new Arm_Retract(armSubsystem));
-	buttonsB.toggleOnTrue(new Grabber_Close(armSubsystem));
-	buttonsB.toggleOnFalse(new Grabber_Open(armSubsystem));
-	buttonsX.toggleOnTrue(new Grabber_Up(armSubsystem));
-	buttonsX.toggleOnFalse(new Grabber_Down(armSubsystem));
+	// buttonsA.toggleOnTrue(new Arm_Extend(armSubsystem));
+	// buttonsA.toggleOnFalse(new Arm_Retract(armSubsystem));
+	// buttonsB.toggleOnTrue(new Grabber_Close(armSubsystem));
+	// buttonsB.toggleOnFalse(new Grabber_Open(armSubsystem));
+	// buttonsX.toggleOnTrue(new Grabber_Up(armSubsystem));
+	// buttonsX.toggleOnFalse(new Grabber_Down(armSubsystem));
   }
 
   public Command getAutonomousCommand() {
