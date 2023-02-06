@@ -71,8 +71,8 @@ public class ArmSubsystem extends SubsystemBase {
 
     // sensors
     flipSensor = new DigitalInput(Constants.DIO.FLIP_SENSOR);
-    leftArmMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.ARM.SOFT_STOP_REVERSE);
-    leftArmMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.ARM.SOFT_STOP_FORWARD);
+    // leftArmMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.ARM.SOFT_STOP_REVERSE);
+    // leftArmMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.ARM.SOFT_STOP_FORWARD);
 
     leftArmMotor.setIdleMode(IdleMode.kBrake);
     rightArmMotor.setIdleMode(IdleMode.kBrake);

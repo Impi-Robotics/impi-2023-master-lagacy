@@ -52,14 +52,13 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void intakeExtend() {
     if(!getFlapOpen()) {
-      intakePiston.set(true);
-    } else {
       intakePiston.set(false);
+    } else {
     }
   }
 
   public void intakeRetract() {
-    intakePiston.set(false);
+    intakePiston.set(true);
   }
 
   public void flapOpen() {
