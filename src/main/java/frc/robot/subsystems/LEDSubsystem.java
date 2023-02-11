@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -35,32 +36,91 @@ public class LEDSubsystem extends SubsystemBase {
     for(var i = 0; i < getLength(); i++) {
         ledBuffer.setRGB(i, r, g, b);
     }
+    // FIXME
+    // led.setData(ledBuffer);
+    // setLEDs("Purple");
+    // Timer timer;
+    // timer.reset();
+    // timer.start();
+    // if(timer < 3){
+    //   setLEDs("Green");
+    // }
+    // else{
+    //   setLEDs("Purple");
+    // }
+    // }
   }
 
-  public void SetLEDsBlue() {
+  /*
+   * public void setLEDs(string color){
+   *  switch(color){
+   *    case "Purple":
+   *        for(var i = 0; i < getLength(); i++) {
+              ledBuffer.setRGB(i, 160,  30, 240);//Purple
+            }
+            led.setData(ledBuffer);
+          }
+   * }
+   */
+  //Cube LEDs
+  public void SetLEDsCubeModeNotHolding() {
     for(var i = 0; i < getLength(); i++) {
-      ledBuffer.setRGB(i, 0, 0, 255);
+      ledBuffer.setRGB(i, 160,  30, 240);//Purple
     }
+    led.setData(ledBuffer);
   }
 
-  public void SetLEDsGreen() {
+  public void SetLEDsCubeModeHolding() {
     for(var i = 0; i < getLength(); i++) {
-      ledBuffer.setRGB(i, 0, 255, 0);
+      ledBuffer.setRGB(i, 0,  0, 255);//Blue
     }
+    led.setData(ledBuffer);
   }
 
-  public void LowPosition() {
+
+  //Cone LEDs
+  public void SetLEDsConeModeNotHolding() {
+    for(var i = 0; i < getLength(); i++) {
+      ledBuffer.setRGB(i, 100,  64, 0);//Orange
+    }
+    led.setData(ledBuffer);
+  }
+
+  public void SetLEDsConeModeHolding() {
+    for(var i = 0; i < getLength(); i++) {
+      ledBuffer.setRGB(i, 100,  100, 0);//Yellow
+    }
+    led.setData(ledBuffer);
+  }
+
+  //Aligned LEDs
+  public void SetLEDsAligned() {
+    for(var i = 0; i < getLength(); i++) {
+      ledBuffer.setRGB(i, 0, 255, 0);//Green
+    }
+    led.setData(ledBuffer);
+  }
+
+  public void SetLEDsNotAligned() {
+    for(var i = 0; i < getLength(); i++) {
+      ledBuffer.setRGB(i, 255,  0, 0);//Red
+    }
+    led.setData(ledBuffer);
+  }
+
+  
+
+  
+
+  
+//OLD
+  public void LowPosition(int r, int g, int b) {
     for(var i = 0; i < getLength(); i++) {
       if(i < (getLength() / 3)) {
-        if(getConeMode()) {
-          ledBuffer.setRGB(i, 255, 255, 0);
-        } else if(getCubeMode()) {
-          ledBuffer.setRGB(i, 160, 32, 240);
-        }
-      } else {
-        ledBuffer.setRGB(i, 0, 0, 0);
+        ledBuffer.setRGB(i, r, g, b);
       }
     }
+    led.setData(ledBuffer);
   }
 
   public void MediumPosition() {
@@ -75,6 +135,7 @@ public class LEDSubsystem extends SubsystemBase {
         ledBuffer.setRGB(i, 0, 0, 0);
       }
     }
+    led.setData(ledBuffer);
   }
 
   public void HighPosition() {
@@ -88,9 +149,9 @@ public class LEDSubsystem extends SubsystemBase {
       } else {
         ledBuffer.setRGB(i, 0, 0, 0);
       }
+      led.setData(ledBuffer);
     }
   }
-
   public void ConeMode(boolean coneMode) {
     this.coneMode = coneMode;
   }

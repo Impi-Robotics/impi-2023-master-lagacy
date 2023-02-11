@@ -1,0 +1,40 @@
+package frc.robot.commands.Swerve;
+
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.SwerveSubsystem;
+
+public class Swerve_StraightenWheels extends CommandBase {
+  
+  private final SwerveSubsystem swerveSubsystem;
+  private final Timer timer = new Timer();
+  public Swerve_StraightenWheels(SwerveSubsystem swerveSubsystem) {
+    this.swerveSubsystem = swerveSubsystem;
+  }
+
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+    timer.reset();
+    timer.start();
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    swerveSubsystem.straightenWheels();
+  }
+
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {}
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    if(timer.get() > 1.){
+      return true;
+    }
+    return false;
+  }
+}
