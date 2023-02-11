@@ -10,12 +10,12 @@ import java.util.function.IntSupplier;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.Chassis.Chassis_ArcadeDrive;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.Arm.Arm_ConeMode;
+import frc.robot.commands.Arm.Arm_Extend;
+import frc.robot.commands.Arm.Arm_Retract;
 import frc.robot.commands.Intake.Intake_Joystick;
-import frc.robot.commands.Limelight.Limelight_AutoAlign;
 import frc.robot.commands.USBCamera.USBCamera_AutoAlign;
-import frc.robot.subsystems.ChassisSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -33,7 +33,6 @@ import frc.robot.subsystems.ArmSubsystem;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final ChassisSubsystem chassisSubsystem = new ChassisSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final USBCameraSubsystem usbCameraSubsystem = new USBCameraSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
@@ -84,8 +83,6 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     intakeSubsystem.setDefaultCommand(new Intake_Joystick(intakeSubsystem, driverLeftTrigger, driverRightTrigger));
-    chassisSubsystem.setDefaultCommand(new Chassis_ArcadeDrive(chassisSubsystem, driverLeftJoystickY, driverRightJoystickX));
-    configureButtonBindings();
   }
 
   /**
@@ -97,7 +94,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //driverA.whileTrue(new Limelight_AutoAlign(limelightSubsystem, chassisSubsystem, true));
     //driverA.whileFalse(new Limelight_AutoAlign(limelightSubsystem, chassisSubsystem, false));
-    driverA.whileTrue(new USBCamera_AutoAlign(usbCameraSubsystem, chassisSubsystem));
+	buttonsA.onTrue(new Arm_Extend(armSubsystem));
+	buttonsY.onTrue(new Arm_Retract(armSubsystem));
+	buttonsX.onTrue(new Arm_ConeMode(armSubsystem, null));
   }
 
   /**
